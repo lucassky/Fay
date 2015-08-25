@@ -130,7 +130,7 @@ public class WBAuthActivity extends Activity {
                 updateTokenView(false);
             }
         });
-        
+
         // 通过 Code 获取 Token
 //        findViewById(R.id.obtain_token_via_code).setOnClickListener(new OnClickListener() {
 //            @Override
@@ -193,8 +193,8 @@ public class WBAuthActivity extends Activity {
                 // 2. 当您注册的应用程序包名与签名不正确时；
                 // 3. 当您在平台上注册的包名和签名与您当前测试的应用的包名和签名不匹配时。
                 String code = values.getString("code");
-                String message = getString(R.string.weibosdk_demo_toast_auth_failed);
-                if (!TextUtils.isEmpty(code)) {
+                    String message = getString(R.string.weibosdk_demo_toast_auth_failed);
+                    if (!TextUtils.isEmpty(code)) {
                     message = message + "\nObtained the code: " + code;
                 }
                 Toast.makeText(WBAuthActivity.this, message, Toast.LENGTH_LONG).show();
