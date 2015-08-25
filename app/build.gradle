@@ -19,7 +19,22 @@ android {
     }
 }
 
+
+task nativeLibsToJar(type: Zip, description: "create a jar archive of the native libs") {
+    destinationDir file("$projectDir/libs")
+    baseName "NativeLibs"
+    extension "jar"
+    from fileTree(dir: "libs", include: "**/*.so")
+    into "lib"
+}
+
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn(nativeLibsToJar)
+}
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.0.0'
+    compile files('src/main/libs/weiboSDKCore_3.1.2.jar')
+    compile files('libs/NativeLibs.jar')
 }

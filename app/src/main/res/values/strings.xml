@@ -11,4 +11,28 @@
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
+
+
+    <string name="weibosdk_demo_toast_auth_success">授权成功</string>
+    <string name="weibosdk_demo_toast_auth_failed">授权失败</string>
+    <string name="weibosdk_demo_toast_auth_canceled">取消授权</string>
+    <string name="weibosdk_demo_toast_obtain_code_success">获取 Code 成功</string>
+    <string name="weibosdk_demo_toast_obtain_code_failed">获取 Code 失败</string>
+    <string name="weibosdk_demo_toast_obtain_token_success">获取 Token 成功</string>
+    <string name="weibosdk_demo_toast_obtain_token_failed">获取 Token 失败</string>
+    <string name="weibosdk_demo_token_to_string_format_1">Token：%1$s \n有效期：%2$s</string>
+
+    <!-- 获取 Token -->
+    <string name="weibosdk_demo_obtain_token_via_sso_all_in_one">SSO 授权（ALL IN ONE）</string>
+    <string name="weibosdk_demo_obtain_token_via_web">SSO 授权（Web）</string>
+    <string name="weibosdk_demo_obtain_token_via_sso">SSO 授权（仅客户端）</string>
+    <string name="weibosdk_demo_obtain_token_via_mobile">手机短信注册登录</string>
+    <string name="weibosdk_demo_obtain_token_via_signature">Web 授权</string>
+    <string name="weibosdk_demo_obtain_token_via_quick_sso">通过微博客户端快速授权</string>
+    <string name="weibosdk_demo_obtain_token_via_code">通过 Code 获取 Token</string>
+    <string name="weibosdk_demo_obtain_token_logout">用户登出</string>
+    <string name="weibosdk_demo_token_info">Token 信息：</string>
+    <string name="weibosdk_demo_token_has_existed">Token 仍在有效期内，无需再次登录。</string>
+    <string name="weibosdk_demo_obtain_token_hint"><b>请注意：</b>\n<li>SSO 登录需要微博客户端的支持，目前仅 3.0.0 及以上微博客户端版本支持 SSO；如果未安装，将自动转为 Oauth2.0 Web 授权认证（即第一种认证方式）</li>\n<li>如果您通过方式一和方式二获取不到 Token，而是获取到 code，那说明您的包名和签名存在问题，请到开放平台注册包名和签名。详情请查看 FAQ 文档</li></string>
+
 </resources>
