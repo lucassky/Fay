@@ -16,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 
 import com.lucassky.fay.fragment.NavigationDrawerFragment;
 import com.lucassky.fay.R;
+import com.lucassky.fay.utils.HttpManager;
 
 public class MainActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
             rootView.findViewById(R.id.section_label).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(getActivity(), WBAuthActivity.class));
+                    HttpManager.getStattuesFriends(getActivity(),0L, 0L, 10, 1, 0, 0, 0);
                 }
             });
             return rootView;
