@@ -3,6 +3,7 @@ package com.lucassky.fay.utils;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.lucassky.fay.model.StatusesResult;
 import com.sina.weibo.sdk.net.WeiboParameters;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
@@ -42,7 +43,7 @@ public class HttpManager {
             public void onResponse(Response response) throws IOException {
                 String str = response.body().string();
                 Gson gson = new Gson();
-                Statuses statuses = gson.fromJson(str, Statuses.class);
+                StatusesResult statuses = gson.fromJson(str, StatusesResult.class);
 //                List<Status> statuses = gson.fromJson(str, new TypeToken<List<Status>>() {}.getType());
                 System.out.println("response"+statuses.toString());
             }
