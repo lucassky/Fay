@@ -1,20 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="AppTheme.Base"/>
-    <style name="AppTheme.Base" parent="Theme.AppCompat">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:colorPrimary">@color/red</item>
+        <item name="android:colorPrimaryDark">@color/red</item>
+        <item name="android:colorAccent">@color/red</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
+
 </resources>
-
-
-<!--<resources>-->
-<!--<style name="AppTheme" parent="Theme.AppCompat">-->
-    <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-    <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-<!--</style>-->
-<!--</resources>-->
-<!--<item name="android:windowNoTitle">true</item>-->
-    <!--<item name="windowActionBar">false</item>-->

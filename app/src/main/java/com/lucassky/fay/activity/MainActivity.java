@@ -34,7 +34,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
-        setActionBarIcon(R.drawable.ic_drawer);
+//        setActionBarIcon(R.drawable.ic_drawer);
         mNavigationDrawerFragment = (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
         // Set up the drawer.
@@ -132,7 +132,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+                                   Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             rootView.findViewById(R.id.section_label).setOnClickListener(new View.OnClickListener() {
                 @Override
