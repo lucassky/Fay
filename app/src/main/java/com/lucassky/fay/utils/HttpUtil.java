@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Administrator on 2015/8/26.
+ * HttpUtil
  */
 public class HttpUtil {
     private static final OkHttpClient mOkHttpClient = new OkHttpClient();

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppTheme.Base">
+
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <!-- Status bar color -->
+        <item name="android:statusBarColor">#5843423e</item>
+
+        <!-- Navigation bar color -->
+        <item name="android:navigationBarColor">#00000000</item>
+    </style>
+
+</resources>

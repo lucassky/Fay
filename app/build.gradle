@@ -6,7 +6,7 @@ android {
 
             defaultConfig {
                 applicationId "com.lucassky.fay"
-                minSdkVersion 21
+                minSdkVersion 14
                 targetSdkVersion 23
                 versionCode 1
                 versionName "1.0"
@@ -42,4 +42,25 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.android.support:cardview-v7:+'
     compile 'com.android.support:recyclerview-v7:+'
+}
+
+
+android {
+    signingConfigs {
+        release{
+            keyAlias 'lucassky'
+            keyPassword 'lp7342186'
+            storeFile file('lucassky.jks')
+            storePassword 'lp7342186'
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+        }
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+
 }

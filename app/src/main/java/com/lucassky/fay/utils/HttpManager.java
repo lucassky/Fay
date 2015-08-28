@@ -13,6 +13,7 @@ import java.io.IOException;
 
 /**
  * Created by Administrator on 2015/8/26.
+ * HttpManager
  */
 public class HttpManager {
     /** HTTP 参数 */
