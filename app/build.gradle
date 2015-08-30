@@ -45,22 +45,22 @@ dependencies {
 }
 
 
-android {
-    signingConfigs {
-        release{
-            keyAlias 'lucassky'
-            keyPassword 'lp7342186'
-            storeFile file('lucassky.jks')
-            storePassword 'lp7342186'
-        }
-    }
-    buildTypes {
-        debug {
-            signingConfig signingConfigs.release
-        }
-        release {
-            signingConfig signingConfigs.release
-        }
-    }
-
-}
+//android {
+//    signingConfigs {
+//        release{
+//            keyAlias 'lucassky'
+//            keyPassword 'lp7342186'
+//            storeFile file('lucassky.jks')
+//            storePassword 'lp7342186'
+//        }
+//    }
+//    buildTypes {
+//        debug {
+//            signingConfig signingConfigs.release
+//        }
+//        release {
+//            signingConfig signingConfigs.release
+//        }
+//    }
+//
+//}

@@ -19,7 +19,7 @@ public class HttpManager {
     /** HTTP 参数 */
     protected static final String KEY_ACCESS_TOKEN = "access_token";
 
-    public static void getStattuesFriends(Context Context,long since_id, long max_id, int count, int page,int base_app, int trim_user, int featureType){
+    public static void getStattuesFriends(Context Context,long since_id, long max_id, int count, int page,int base_app, int trim_user, int featureType,Callback callback){
         WeiboParameters params = new WeiboParameters(Constants.APP_KEY);
         params.put(KEY_ACCESS_TOKEN,AccessTokenKeeper.readAccessToken(Context).getToken());
         params.put("since_id", since_id);
@@ -34,21 +34,7 @@ public class HttpManager {
         Request request = new Request.Builder()
                 .url("https://api.weibo.com/2/statuses/friends_timeline.json"+"?" + str)
                 .build();
-        HttpUtil.enqueue(request, new Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {
-                System.out.println("request"+request.toString());
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                String str = response.body().string();
-                Gson gson = new Gson();
-                StatusesResult statuses = gson.fromJson(str, StatusesResult.class);
-//                List<Status> statuses = gson.fromJson(str, new TypeToken<List<Status>>() {}.getType());
-                System.out.println("response"+statuses.toString());
-            }
-        });
+        HttpUtil.enqueue(request,callback);
 
     }
 }

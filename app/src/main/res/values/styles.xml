@@ -15,7 +15,7 @@
         <!-- Status bar color -->
         <item name="colorPrimaryDark">@color/color_toolbar</item>
         <!-- Window color -->
-        <item name="android:windowBackground">@color/red</item>
+        <item name="android:windowBackground">@android:color/white</item>
         <item name="drawerArrowStyle">@style/AppTheme.MyDrawerArrowStyle</item>
     </style>
 

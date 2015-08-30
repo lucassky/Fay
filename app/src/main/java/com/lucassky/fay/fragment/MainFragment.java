@@ -1,14 +1,30 @@
 package com.lucassky.fay.fragment;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
+import com.google.gson.Gson;
 import com.lucassky.fay.R;
+import com.lucassky.fay.adapter.StatusAdapter;
+import com.lucassky.fay.model.StatusesResult;
+import com.lucassky.fay.model.base.Status;
+import com.lucassky.fay.utils.HttpManager;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.LogRecord;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,7 +34,7 @@ import com.lucassky.fay.R;
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements Callback,AdapterView.OnItemClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,6 +46,15 @@ public class MainFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private ListView mLVFStatuses;//关注好友的最新微博
+    private List<Status> mStatuses = new ArrayList<Status>();
+    private StatusAdapter mAdapter;
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+    };
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -62,10 +87,14 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        HttpManager.getStattuesFriends(getActivity(), 0L, 0L, 100, 1, 0, 0, 0,this);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        mLVFStatuses = (ListView) view.findViewById(R.id.lv_f_statuses);
+        mAdapter = new StatusAdapter(mStatuses,getActivity());
+        mLVFStatuses.setAdapter(mAdapter);
+        mLVFStatuses.setOnItemClickListener(this);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -82,12 +111,40 @@ public class MainFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onFailure(Request request, IOException e) {
+
+    }
+
+    @Override
+    public void onResponse(Response response) throws IOException {
+        String str = response.body().string();
+        Gson gson = new Gson();
+        final StatusesResult statuses = gson.fromJson(str, StatusesResult.class);
+//                List<Status> statuses = gson.fromJson(str, new TypeToken<List<Status>>() {}.getType());
+        final List<Status> statuse = statuses.getStatuses();
+        if (statuse != null && statuse.size() > 0){
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mAdapter.setmStatuses(statuse);
+                }
+            });
+        }
+        System.out.println("response" + statuses.toString());
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        System.out.println("position = " + position);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
