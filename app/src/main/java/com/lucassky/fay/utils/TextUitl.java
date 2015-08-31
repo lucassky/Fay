@@ -88,8 +88,7 @@ public class TextUitl {
                         startIndex = i;
                     } else {
                         sb.append('#');
-                        ss.setSpan(new URLSpan(sb.toString()), startIndex, i + 1,
-                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        ss.setSpan(new URLSpan(sb.toString()), startIndex, i + 1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         sb = null;
                         start = false;
                     }

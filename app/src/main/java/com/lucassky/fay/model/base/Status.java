@@ -1,15 +1,14 @@
 package com.lucassky.fay.model.base;
 
+import com.lucassky.fay.utils.StringUtil;
+
 import java.util.List;
 
 /**
  * Created by Administrator on 2015/8/26.
  */
 public class Status {
-    /*
-     *微博创建时间
-     */
-    private String created_at;
+    private String created_at;//微博创建时间
     private long id;//微博ID
     private long mid;//微博MID
     private String idstr;//字符串型的微博ID
@@ -22,14 +21,14 @@ public class Status {
     private String in_reply_to_screen_name;//（暂未支持）回复人昵称
 
 
-    private List<thumbnailPic> pic_urls;//多个缩略图的数组，官网api说明的是pic_ids这个字段，但是返回值没有
+    private List<ThumbnailPic> pic_urls;//多个缩略图的数组，官网api说明的是pic_ids这个字段，但是返回值没有
     private String thumbnail_pic;//缩略图片地址，没有时不返回此字段
     private String bmiddle_pic;//中等尺寸图片地址，没有时不返回此字段
     private String original_pic;//原始图片地址，没有时不返回此字段
 
     private Geo geo;//地理信息字段 详细
     private User user;//微博作者的用户信息字段 详细
-    private Status retweeted_status;//被转发的原微博信息字段，当该微博为转发微博时返回 详细
+    private Status retweeted_status = null;//被转发的原微博信息字段，当该微博为转发微博时返回 详细
     private int reposts_count;//转发数
     private int comments_count;//评论数
     private int attitudes_count;//表态数
@@ -134,11 +133,11 @@ public class Status {
         this.geo = geo;
     }
 
-    public List<thumbnailPic> getPic_urls() {
+    public List<ThumbnailPic> getPic_urls() {
         return pic_urls;
     }
 
-    public void setPic_urls(List<thumbnailPic> pic_urls) {
+    public void setPic_urls(List<ThumbnailPic> pic_urls) {
         this.pic_urls = pic_urls;
     }
 
@@ -214,15 +213,4 @@ public class Status {
         this.mlevel = mlevel;
     }
 
-    class thumbnailPic{
-        private String thumbnail_pic;//缩略图地址
-
-        public String getThumbnail_pic() {
-            return thumbnail_pic;
-        }
-
-        public void setThumbnail_pic(String thumbnail_pic) {
-            this.thumbnail_pic = thumbnail_pic;
-        }
-    }
 }
