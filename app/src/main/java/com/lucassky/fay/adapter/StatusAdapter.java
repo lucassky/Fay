@@ -15,6 +15,7 @@ import com.lucassky.fay.R;
 import com.lucassky.fay.model.base.Status;
 import com.lucassky.fay.utils.StringUtil;
 import com.lucassky.fay.utils.TextUitl;
+import com.lucassky.fay.view.ExpandGridView;
 import com.lucassky.fay.view.RoundImageView;
 import com.squareup.picasso.Picasso;
 
@@ -71,8 +72,8 @@ public class StatusAdapter extends BaseAdapter {
             viewHolder.statusTranAndCom = (TextView) convertView.findViewById(R.id.status_transmit_comment);
             viewHolder.status2TvContent = (TextView) convertView.findViewById(R.id.status2_tv_content);
             viewHolder.status2TranAndCom = (TextView) convertView.findViewById(R.id.status2_transmit_comment);
-            viewHolder.gridViewForStatus = (GridView) convertView.findViewById(R.id.status_gd);
-            viewHolder.gridViewForStatus2 = (GridView) convertView.findViewById(R.id.status2_gd);
+            viewHolder.gridViewForStatus = (ExpandGridView) convertView.findViewById(R.id.status_gd);
+            viewHolder.gridViewForStatus2 = (ExpandGridView) convertView.findViewById(R.id.status2_gd);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -154,7 +155,7 @@ public class StatusAdapter extends BaseAdapter {
         private RelativeLayout status2RL;
         private TextView status2TvContent;
         private TextView status2TranAndCom;
-        private GridView gridViewForStatus;
-        private GridView gridViewForStatus2;
+        private ExpandGridView gridViewForStatus;
+        private ExpandGridView gridViewForStatus2;
     }
 }
