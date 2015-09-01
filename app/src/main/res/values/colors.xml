@@ -13,7 +13,9 @@
 
     <color name="red">#FF0000</color>
 
-    <color name="color_toolbar">#303f9f</color>
+    <color name="color_toolbar">#57C278</color>
     <color name="Indigo_colorPrimary">#3f51b5</color>
     <color name="Indigo_nav_color">#4675FF</color>
+    <color name="item_status_2_bg">#EEE0E5</color>
+    <color name="status_bg">#F0F0F0</color>
 </resources>

@@ -1,16 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="com.lucassky.fay.fragment.MainFragment">
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/swiperefresh"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/status_bg">
 
     <!-- TODO: Update blank fragment layout -->
     <ListView
         android:id="@+id/lv_f_statuses"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@android:color/white"
-        android:padding="8dp"
-        android:dividerHeight="8dp"/>
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:divider="@color/status_bg"
+        android:background="@color/status_bg"
+        android:dividerHeight="5dp"/>
 
-</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ import java.util.logging.LogRecord;
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment implements Callback,AdapterView.OnItemClickListener{
+public class MainFragment extends Fragment implements Callback,AdapterView.OnItemClickListener,SwipeRefreshLayout.OnRefreshListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,7 +46,7 @@ public class MainFragment extends Fragment implements Callback,AdapterView.OnIte
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView mLVFStatuses;//关注好友的最新微博
     private List<Status> mStatuses = new ArrayList<Status>();
     private StatusAdapter mAdapter;
@@ -87,14 +88,17 @@ public class MainFragment extends Fragment implements Callback,AdapterView.OnIte
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        HttpManager.getStattuesFriends(getActivity(), 0L, 0L, 100, 1, 0, 0, 0,this);
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            HttpManager.getStattuesFriends(getActivity(), 0L, 0L, 100, 1, 0, 0, 0, this);
+            View view = inflater.inflate(R.layout.fragment_main, container, false);
         mLVFStatuses = (ListView) view.findViewById(R.id.lv_f_statuses);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setRefreshing(true);
         mAdapter = new StatusAdapter(mStatuses,getActivity());
-        mLVFStatuses.setAdapter(mAdapter);
-        mLVFStatuses.setOnItemClickListener(this);
-        return view;
+            mLVFStatuses.setAdapter(mAdapter);
+            mLVFStatuses.setOnItemClickListener(this);
+            return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -116,18 +120,26 @@ public class MainFragment extends Fragment implements Callback,AdapterView.OnIte
 
     }
 
+    private List<Status> mStatuse = new ArrayList<Status>();
     @Override
     public void onResponse(Response response) throws IOException {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
         String str = response.body().string();
         Gson gson = new Gson();
         final StatusesResult statuses = gson.fromJson(str, StatusesResult.class);
 //                List<Status> statuses = gson.fromJson(str, new TypeToken<List<Status>>() {}.getType());
-        final List<Status> statuse = statuses.getStatuses();
+        List<Status> statuse = statuses.getStatuses();
+        mStatuse.addAll(0,statuse);
         if (statuse != null && statuse.size() > 0){
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    mAdapter.setmStatuses(statuse);
+                    mAdapter.setmStatuses(mStatuse);
                 }
             });
         }
@@ -137,6 +149,15 @@ public class MainFragment extends Fragment implements Callback,AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         System.out.println("position = " + position);
+    }
+
+    @Override
+    public void onRefresh() {
+        if(mStatuse.size() >0){
+            HttpManager.getStattuesFriends(getActivity(), mStatuse.get(0).getId(), 0L, 100, 1, 0, 0, 0,this);
+        }else{
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     /**

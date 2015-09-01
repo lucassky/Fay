@@ -109,7 +109,7 @@ public class StatusAdapter extends BaseAdapter {
 
 
         if (statusIn != null) {
-            TextUitl.addURLSpan(mContext, statusIn.getText(), viewHolder.status2TvContent);
+            TextUitl.addURLSpan(mContext, "@"+ statusIn.getUser().getName() + ":" + statusIn.getText(), viewHolder.status2TvContent);
             viewHolder.status2TvContent.setVisibility(View.VISIBLE);
             if (statusIn.getReposts_count() == 0 && statusIn.getComments_count() == 0) {
                 viewHolder.status2TranAndCom.setText("");
