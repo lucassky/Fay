@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lucassky.fay.R;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.LogRecord;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -35,7 +38,7 @@ import java.util.logging.LogRecord;
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment implements Callback,AdapterView.OnItemClickListener,SwipeRefreshLayout.OnRefreshListener {
+public class MainFragment extends Fragment implements Callback, AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -50,12 +53,13 @@ public class MainFragment extends Fragment implements Callback,AdapterView.OnIte
     private ListView mLVFStatuses;//关注好友的最新微博
     private List<Status> mStatuses = new ArrayList<Status>();
     private StatusAdapter mAdapter;
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
         }
     };
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -88,17 +92,17 @@ public class MainFragment extends Fragment implements Callback,AdapterView.OnIte
     }
 
     @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            HttpManager.getStattuesFriends(getActivity(), 0L, 0L, 100, 1, 0, 0, 0, this);
-            View view = inflater.inflate(R.layout.fragment_main, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        HttpManager.getStattuesFriends(getActivity(), 0L, 0L, 100, 1, 0, 0, 0, this);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
         mLVFStatuses = (ListView) view.findViewById(R.id.lv_f_statuses);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setRefreshing(true);
-        mAdapter = new StatusAdapter(mStatuses,getActivity());
-            mLVFStatuses.setAdapter(mAdapter);
-            mLVFStatuses.setOnItemClickListener(this);
-            return view;
+        mAdapter = new StatusAdapter(mStatuses, getActivity());
+        mLVFStatuses.setAdapter(mAdapter);
+        mLVFStatuses.setOnItemClickListener(this);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -121,6 +125,7 @@ public class MainFragment extends Fragment implements Callback,AdapterView.OnIte
     }
 
     private List<Status> mStatuse = new ArrayList<Status>();
+
     @Override
     public void onResponse(Response response) throws IOException {
         mHandler.post(new Runnable() {
@@ -133,9 +138,9 @@ public class MainFragment extends Fragment implements Callback,AdapterView.OnIte
         Gson gson = new Gson();
         final StatusesResult statuses = gson.fromJson(str, StatusesResult.class);
 //                List<Status> statuses = gson.fromJson(str, new TypeToken<List<Status>>() {}.getType());
-        List<Status> statuse = statuses.getStatuses();
-        mStatuse.addAll(0,statuse);
-        if (statuse != null && statuse.size() > 0){
+        final List<Status> statuse = statuses.getStatuses();
+        if (statuse != null && statuse.size() > 0) {
+            mStatuse.addAll(0, statuse);
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -153,9 +158,9 @@ public class MainFragment extends Fragment implements Callback,AdapterView.OnIte
 
     @Override
     public void onRefresh() {
-        if(mStatuse.size() >0){
-            HttpManager.getStattuesFriends(getActivity(), mStatuse.get(0).getId(), 0L, 100, 1, 0, 0, 0,this);
-        }else{
+        if (mStatuse.size() > 0) {
+            HttpManager.getStattuesFriends(getActivity(), mStatuse.get(0).getId(), 0L, 100, 1, 0, 0, 0, this);
+        } else {
             mSwipeRefreshLayout.setRefreshing(false);
         }
     }

@@ -39,6 +39,7 @@ public class StatusAdapter extends BaseAdapter {
     public void setmStatuses(List<Status> statuses) {
         if (mStatuses == null)
             mStatuses = new ArrayList<Status>();
+        mStatuses.clear();
         mStatuses.addAll(statuses);
         notifyDataSetChanged();
     }
