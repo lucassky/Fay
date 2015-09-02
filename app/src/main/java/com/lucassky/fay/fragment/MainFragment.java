@@ -11,14 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lucassky.fay.R;
 import com.lucassky.fay.adapter.StatusAdapter;
 import com.lucassky.fay.model.StatusesResult;
 import com.lucassky.fay.model.base.Status;
-import com.lucassky.fay.utils.HttpManager;
+import com.lucassky.fay.utils.newwork.HttpManager;
+import com.lucassky.fay.utils.newwork.UrlUitl;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -26,9 +26,6 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.LogRecord;
-
-import static android.widget.Toast.LENGTH_SHORT;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -93,7 +90,7 @@ public class MainFragment extends Fragment implements Callback, AdapterView.OnIt
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        HttpManager.getStattuesFriends(getActivity(), 0L, 0L, 100, 1, 0, 0, 0, this);
+        HttpManager.getStattuesFriends(getActivity(),UrlUitl.STATUSES_FRIENDS_TIMELINE, 0L, 0L, 100, 1, 0, 0, 0, this);
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mLVFStatuses = (ListView) view.findViewById(R.id.lv_f_statuses);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
@@ -159,7 +156,7 @@ public class MainFragment extends Fragment implements Callback, AdapterView.OnIt
     @Override
     public void onRefresh() {
         if (mStatuse.size() > 0) {
-            HttpManager.getStattuesFriends(getActivity(), mStatuse.get(0).getId(), 0L, 100, 1, 0, 0, 0, this);
+            HttpManager.getStattuesFriends(getActivity(), UrlUitl.STATUSES_FRIENDS_TIMELINE, mStatuse.get(0).getId(), 0L, 100, 1, 0, 0, 0, this);
         } else {
             mSwipeRefreshLayout.setRefreshing(false);
         }

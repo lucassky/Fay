@@ -1,4 +1,4 @@
-package com.lucassky.fay.utils;
+package com.lucassky.fay.utils.newwork;
 
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;

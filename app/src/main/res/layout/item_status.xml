@@ -54,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
+                android:autoLink="all"
                 android:text="Android Studio是一个功能很强大的软件工具，以前我们用Eclipse的时候对于颜色资源的数字很难记住，现在在Android Studio上面可以很方便的解决了。"
                 android:textColor="@android:color/black"/>
 
@@ -82,6 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
+                android:autoLink="all"
                 android:padding="5dp"
                 android:text="Android Studio是一个功能很强大的软件工具，以前我们用Eclipse的时候对于颜色资源的数字很难记住，现在在Android Studio上面可以很方便的解决了。"
                 android:textColor="@android:color/black"/>
@@ -103,9 +105,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/status2_gd"
+                android:layout_marginLeft="4dp"
                 android:gravity="center_vertical"
                 android:padding="4dp"
-                android:layout_marginLeft="4dp"
                 android:text="100转发 &amp; 900评论"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="11sp"/>
@@ -117,6 +119,7 @@
                 android:layout_alignParentLeft="true"
                 android:background="@android:color/holo_blue_bright"/>-->
         </RelativeLayout>
+
         <TextView
             android:id="@+id/status_transmit_comment"
             android:layout_width="wrap_content"

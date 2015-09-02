@@ -69,11 +69,11 @@ public class StatusAdapter extends BaseAdapter {
             viewHolder.userName = (TextView) convertView.findViewById(R.id.user_name);
             viewHolder.statusTvContent = (TextView) convertView.findViewById(R.id.status_tv_content);
             viewHolder.statusFromTime = (TextView) convertView.findViewById(R.id.status_from_time);
-            viewHolder.status2RL = (RelativeLayout) convertView.findViewById(R.id.status2_rl);
             viewHolder.statusTranAndCom = (TextView) convertView.findViewById(R.id.status_transmit_comment);
+            viewHolder.gridViewForStatus = (ExpandGridView) convertView.findViewById(R.id.status_gd);
+            viewHolder.status2RL = (RelativeLayout) convertView.findViewById(R.id.status2_rl);
             viewHolder.status2TvContent = (TextView) convertView.findViewById(R.id.status2_tv_content);
             viewHolder.status2TranAndCom = (TextView) convertView.findViewById(R.id.status2_transmit_comment);
-            viewHolder.gridViewForStatus = (ExpandGridView) convertView.findViewById(R.id.status_gd);
             viewHolder.gridViewForStatus2 = (ExpandGridView) convertView.findViewById(R.id.status2_gd);
             convertView.setTag(viewHolder);
         } else {
@@ -112,9 +112,9 @@ public class StatusAdapter extends BaseAdapter {
         if (statusIn != null) {
             TextUitl.addURLSpan(mContext, "@"+ statusIn.getUser().getName() + ":" + statusIn.getText(), viewHolder.status2TvContent);
             viewHolder.status2TvContent.setVisibility(View.VISIBLE);
-            if (statusIn.getReposts_count() == 0 && statusIn.getComments_count() == 0) {
-                viewHolder.status2TranAndCom.setText("");
-                viewHolder.status2TranAndCom.setVisibility(View.GONE);
+                if (statusIn.getReposts_count() == 0 && statusIn.getComments_count() == 0) {
+                    viewHolder.status2TranAndCom.setText("");
+                    viewHolder.status2TranAndCom.setVisibility(View.GONE);
             } else if (statusIn.getReposts_count() != 0 && statusIn.getComments_count() != 0) {
                 viewHolder.status2TranAndCom.setText(statusIn.getReposts_count() + "转发 & " + statusIn.getComments_count() + "评论");
                 viewHolder.status2TranAndCom.setVisibility(View.VISIBLE);
