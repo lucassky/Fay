@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.lucassky.fay.R;
 import com.lucassky.fay.adapter.StatusAdapter;
+import com.lucassky.fay.adapter.StatusRVAdapter;
 import com.lucassky.fay.model.StatusesResult;
 import com.lucassky.fay.model.base.Status;
 import com.lucassky.fay.utils.newwork.HttpManager;
@@ -47,9 +51,11 @@ public class MainFragment extends Fragment implements Callback, AdapterView.OnIt
 
     private OnFragmentInteractionListener mListener;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private ListView mLVFStatuses;//关注好友的最新微博
+    private RecyclerView mLVFStatuses;//关注好友的最新微博
+    private LinearLayoutManager mLayoutManager ;
     private List<Status> mStatuses = new ArrayList<Status>();
-    private StatusAdapter mAdapter;
+//    private StatusAdapter mAdapter;
+    private StatusRVAdapter mStatusRVAdapter;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -92,13 +98,19 @@ public class MainFragment extends Fragment implements Callback, AdapterView.OnIt
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         HttpManager.getStattuesFriends(getActivity(),UrlUitl.STATUSES_FRIENDS_TIMELINE, 0L, 0L, 100, 1, 0, 0, 0, this);
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        mLVFStatuses = (ListView) view.findViewById(R.id.lv_f_statuses);
+        mLVFStatuses = (RecyclerView) view.findViewById(R.id.lv_f_statuses);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setRefreshing(true);
-        mAdapter = new StatusAdapter(mStatuses, getActivity());
-        mLVFStatuses.setAdapter(mAdapter);
-        mLVFStatuses.setOnItemClickListener(this);
+//        mAdapter = new StatusAdapter(mStatuses, getActivity());
+//        mLVFStatuses.setAdapter(mAdapter);
+//        mLVFStatuses.setOnItemClickListener(this);
+
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLVFStatuses.setLayoutManager(mLayoutManager);
+        mStatusRVAdapter = new StatusRVAdapter(mStatuses);
+        mLVFStatuses.setAdapter(mStatusRVAdapter);
+        mLVFStatuses.setItemAnimator(new DefaultItemAnimator());
         return view;
     }
 
@@ -141,7 +153,8 @@ public class MainFragment extends Fragment implements Callback, AdapterView.OnIt
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    mAdapter.setmStatuses(mStatuse);
+//                    mAdapter.setmStatuses(mStatuse);
+                    mStatusRVAdapter.setMStatuses(mStatuse);
                 }
             });
         }

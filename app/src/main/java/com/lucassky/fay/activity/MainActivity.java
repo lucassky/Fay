@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
     private FragmentTransaction mFragTransaction;
     private FragmentManager mFragManager;
 
-    private Handler mHandler = new Handler() {
+    private static Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
