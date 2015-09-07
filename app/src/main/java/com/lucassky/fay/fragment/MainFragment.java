@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lucassky.fay.R;
@@ -39,7 +40,7 @@ import java.util.List;
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment implements Callback, AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class MainFragment extends Fragment implements Callback, AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,StatusRVAdapter.RVAdapterOnClick {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -108,7 +109,7 @@ public class MainFragment extends Fragment implements Callback, AdapterView.OnIt
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mLVFStatuses.setLayoutManager(mLayoutManager);
-        mStatusRVAdapter = new StatusRVAdapter(mStatuses);
+        mStatusRVAdapter = new StatusRVAdapter(mStatuses,this);
         mLVFStatuses.setAdapter(mStatusRVAdapter);
         mLVFStatuses.setItemAnimator(new DefaultItemAnimator());
         return view;
@@ -159,7 +160,7 @@ public class MainFragment extends Fragment implements Callback, AdapterView.OnIt
             });
         }
         System.out.println("response" + statuses.toString());
-    }
+}
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -173,6 +174,16 @@ public class MainFragment extends Fragment implements Callback, AdapterView.OnIt
         } else {
             mSwipeRefreshLayout.setRefreshing(false);
         }
+    }
+
+    @Override
+    public void onMainClick(Status status) {
+        Toast.makeText(getActivity(),status.getText(),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUserPicClick(Status status) {
+
     }
 
     /**

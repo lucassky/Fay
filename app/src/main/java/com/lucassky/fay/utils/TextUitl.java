@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.style.CharacterStyle;
+import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
@@ -15,6 +19,7 @@ import android.text.style.ImageSpan;
 import android.text.style.URLSpan;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lucassky.fay.R;
 
@@ -29,8 +34,8 @@ public class TextUitl {
     // 加入话题 好友 URL的连结
     public static char strarray[];
 
-    public static void addURLSpan(Context activity, String str, TextView textView) {
-        try{
+    public static void addURLSpan(final Context activity, String str, TextView textView) {
+        try {
             SpannableString ss = new SpannableString(str);
             strarray = str.toCharArray();
             int l = str.length() - 10;
@@ -45,8 +50,15 @@ public class TextUitl {
                             sb.append(strarray[j]);
                         else {
                             Log.d("http", sb.toString());
-                            ss.setSpan(new URLSpan(sb.toString()), i, j,
-                                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            final String sr = sb.toString();
+                            ClickableSpan clickableSpan = new ClickableSpan() {
+                                @Override
+                                public void onClick(View widget) {
+                                    Toast.makeText(activity,"Link:"+sr.toString(),Toast.LENGTH_LONG).show();
+                                }
+                            };
+                            ss.setSpan(clickableSpan, i, j,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                            ss.setSpan(new URLSpan(sb.toString()), i, j,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                             i = j;
                             break;
                         }
@@ -56,6 +68,7 @@ public class TextUitl {
             // 处理话题
             l = str.length();
             StringBuffer sb = null;
+
             boolean start = false;
             int startIndex = 0;
             for (int i = 0; i < l; i++) {
@@ -66,8 +79,15 @@ public class TextUitl {
                 } else {
                     if (start) {
                         if (strarray[i] == ':') {
-                            ss.setSpan(new URLSpan(sb.toString()), startIndex, i,
-                                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                             final String strName = sb.toString();
+                            ClickableSpan clickableSpan = new ClickableSpan() {
+                                @Override
+                                public void onClick(View widget) {
+                                     Toast.makeText(activity,"name:" + strName,Toast.LENGTH_LONG).show();
+                                }
+                            };
+                            ss.setSpan(clickableSpan, startIndex, i, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                            ss.setSpan(new URLSpan(sb.toString()), startIndex, i, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                             sb = null;
                             start = false;
                         } else {
@@ -88,7 +108,14 @@ public class TextUitl {
                         startIndex = i;
                     } else {
                         sb.append('#');
-                        ss.setSpan(new URLSpan(sb.toString()), startIndex, i + 1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        final String strTopic = sb.toString();
+                        ClickableSpan clickableSpan = new ClickableSpan() {
+                            @Override
+                            public void onClick(View widget) {
+                                Toast.makeText(activity,"strTopic:" + strTopic,Toast.LENGTH_LONG).show();
+                            }
+                        };
+                        ss.setSpan(clickableSpan, startIndex, i + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         sb = null;
                         start = false;
                     }

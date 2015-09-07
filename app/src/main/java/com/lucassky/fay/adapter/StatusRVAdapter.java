@@ -1,6 +1,7 @@
 package com.lucassky.fay.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -30,8 +31,10 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
 
     private List<Status> mStatuses;
     private Context mContext;
-    public StatusRVAdapter(List<Status> mStatuses) {
+    private RVAdapterOnClick mRVAdapterOnClick;
+    public StatusRVAdapter(List<Status> mStatuses,RVAdapterOnClick rVAdapterOnClick) {
         this.mStatuses = mStatuses;
+        this.mRVAdapterOnClick = rVAdapterOnClick;
     }
 
     public void setMStatuses(List<Status> statuses) {
@@ -50,9 +53,15 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Status status = mStatuses.get(position);
+        final Status status = mStatuses.get(position);
         Status statusIn = status.getRetweeted_status();
         Picasso.with(mContext).load(status.getUser().getAvatar_large()).into(holder.userIcon);
+        holder.cardView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRVAdapterOnClick.onMainClick(status);
+            }
+        });
         holder.userName.setText(status.getUser().getName());
         holder.statusFromTime.setText(Html.fromHtml(status.getSource()) + " · " + StringUtil.formarTime(status.getCreated_at()));
         TextUitl.addURLSpan(mContext, status.getText(), holder.statusTvContent);
@@ -110,8 +119,8 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
 
         } else {
             holder.status2TranAndCom.setVisibility(View.GONE);
-            holder.status2TranAndCom.setText("");
-            holder.status2TvContent.setText("");
+//            holder.status2TranAndCom.setText("");
+//            holder.status2TvContent.setText("");
             holder.status2RL.setVisibility(View.GONE);
             holder.status2TvContent.setVisibility(View.GONE);
         }
@@ -123,6 +132,7 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private CardView cardView;
         private RoundImageView userIcon;
         private TextView userName;
         private TextView statusFromTime;
@@ -136,6 +146,7 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
+            cardView = (CardView) itemView.findViewById(R.id.card_view);
             userIcon = (RoundImageView) itemView.findViewById(R.id.user_icon);
             userName = (TextView) itemView.findViewById(R.id.user_name);
             statusTvContent = (TextView) itemView.findViewById(R.id.status_tv_content);
@@ -147,5 +158,10 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
             status2TranAndCom = (TextView) itemView.findViewById(R.id.status2_transmit_comment);
             gridViewForStatus2 = (ExpandGridView) itemView.findViewById(R.id.status2_gd);
         }
+    }
+
+    public interface RVAdapterOnClick{
+        public void onMainClick(Status status);
+        public void onUserPicClick(Status status);
     }
 }
