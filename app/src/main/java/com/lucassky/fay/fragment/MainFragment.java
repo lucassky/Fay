@@ -40,7 +40,7 @@ import java.util.List;
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment implements Callback, AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,StatusRVAdapter.RVAdapterOnClick {
+public class MainFragment extends Fragment implements Callback,SwipeRefreshLayout.OnRefreshListener,StatusRVAdapter.RVAdapterOnClick {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -161,11 +161,6 @@ public class MainFragment extends Fragment implements Callback, AdapterView.OnIt
         }
         System.out.println("response" + statuses.toString());
 }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        System.out.println("position = " + position);
-    }
 
     @Override
     public void onRefresh() {
