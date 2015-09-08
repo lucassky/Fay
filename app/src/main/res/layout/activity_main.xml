@@ -37,7 +37,7 @@
         android:layout_width="270dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/color_toolbar"
+        android:background="@color/red"
         android:clickable="true"
         android:fitsSystemWindows="true">
 
@@ -83,7 +83,7 @@
 
             <TextView
                 android:id="@+id/drawer_tv_store"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:text="收藏"
                 android:textColor="@android:color/black"
@@ -91,21 +91,55 @@
 
             <TextView
                 android:id="@+id/drawer_tv_draft"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="草稿"/>
+                android:text="草稿"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/drawer_tv_hot"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="热门话题"/>
+                android:text="热门话题"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/drawer_tv_settings"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="设置"/>
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:text="设置"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"/>
+
+            <Button
+                android:id="@+id/drawer_bth_settings"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="设置"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"/>
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Button"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackground"
+                android:text="Button"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="Button"/>
         </LinearLayout>
     </RelativeLayout>
 </android.support.v4.widget.DrawerLayout>

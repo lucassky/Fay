@@ -11,11 +11,19 @@
     <color name="windowBackgroundColor">#333333</color>
     <color name="black_translucent">#80000000</color>
 
-    <color name="red">#FF0000</color>
-
     <color name="color_toolbar">#57C278</color>
     <color name="Indigo_colorPrimary">#3f51b5</color>
     <color name="Indigo_nav_color">#4675FF</color>
     <color name="item_status_2_bg">#EEE0E5</color>
     <color name="status_bg">#F0F0F0</color>
+
+
+    <color name="text_color_primary">#212121</color>
+    <color name="text_second_color_primary">#727272</color>
+    <color name="window_background">@android:color/white</color>
+
+
+    <color name="red">#FF5722</color>
+    <color name="dark_red">#F4511E</color>
+    <color name="accent_red">#FF6347</color>
 </resources>

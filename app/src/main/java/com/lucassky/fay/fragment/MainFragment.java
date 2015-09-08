@@ -178,7 +178,7 @@ public class MainFragment extends Fragment implements Callback, AdapterView.OnIt
 
     @Override
     public void onMainClick(Status status) {
-        Toast.makeText(getActivity(),status.getText(),Toast.LENGTH_SHORT).show();
+        System.out.println(status.getText());
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,7 +33,8 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
     private List<Status> mStatuses;
     private Context mContext;
     private RVAdapterOnClick mRVAdapterOnClick;
-    public StatusRVAdapter(List<Status> mStatuses,RVAdapterOnClick rVAdapterOnClick) {
+
+    public StatusRVAdapter(List<Status> mStatuses, RVAdapterOnClick rVAdapterOnClick) {
         this.mStatuses = mStatuses;
         this.mRVAdapterOnClick = rVAdapterOnClick;
     }
@@ -51,20 +53,25 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_status, parent, false));
     }
 
+
+    private Status mStatus;
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Status status = mStatuses.get(position);
+        Status status = mStatuses.get(position);
+        mStatus = status;
         Status statusIn = status.getRetweeted_status();
         Picasso.with(mContext).load(status.getUser().getAvatar_large()).into(holder.userIcon);
         holder.cardView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRVAdapterOnClick.onMainClick(status);
+                mRVAdapterOnClick.onMainClick(mStatus);
             }
         });
+        TextUitl.addURLSpan(mContext, status.getText(), holder.statusTvContent);
+
         holder.userName.setText(status.getUser().getName());
         holder.statusFromTime.setText(Html.fromHtml(status.getSource()) + " · " + StringUtil.formarTime(status.getCreated_at()));
-        TextUitl.addURLSpan(mContext, status.getText(), holder.statusTvContent);
         if (status.getReposts_count() == 0 && status.getComments_count() == 0) {
             holder.statusTranAndCom.setVisibility(View.GONE);
         } else if (status.getReposts_count() != 0 && status.getComments_count() != 0) {
@@ -73,26 +80,30 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
         } else if (status.getReposts_count() != 0) {
             holder.statusTranAndCom.setText(status.getReposts_count() + "转发");
             holder.statusTranAndCom.setVisibility(View.VISIBLE);
-        } else if (status.getComments_count() != 0) {
+        } else {
             holder.statusTranAndCom.setText(status.getComments_count() + "评论");
             holder.statusTranAndCom.setVisibility(View.VISIBLE);
         }
 
-        if(status.getPic_urls() != null && status.getPic_urls().size()>0){
+        if (status.getPic_urls() != null && status.getPic_urls().size() > 0) {
             StatusGridViewAdapter statusGridViewAdapter = new StatusGridViewAdapter(mContext);
             holder.gridViewForStatus.setAdapter(statusGridViewAdapter);
             statusGridViewAdapter.setmThumbnailPics(status.getPic_urls());
             holder.gridViewForStatus.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.gridViewForStatus.setVisibility(View.GONE);
         }
 
 
         if (statusIn != null) {
             User user = statusIn.getUser();
-            if(user != null)
-                TextUitl.addURLSpan(mContext, "@"+ user.getName() + ":" + statusIn.getText(), holder.status2TvContent);
-            holder.status2TvContent.setVisibility(View.VISIBLE);
+            if (user != null) {
+                TextUitl.addURLSpan(mContext, "@" + user.getName() + ":" + statusIn.getText(), holder.status2TvContent);
+                holder.status2TvContent.setVisibility(View.VISIBLE);
+            } else {
+                TextUitl.addURLSpan(mContext, statusIn.getText(), holder.status2TvContent);
+                holder.status2TvContent.setVisibility(View.VISIBLE);
+            }
             if (statusIn.getReposts_count() == 0 && statusIn.getComments_count() == 0) {
                 holder.status2TranAndCom.setText("");
                 holder.status2TranAndCom.setVisibility(View.GONE);
@@ -102,25 +113,25 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
             } else if (statusIn.getReposts_count() != 0) {
                 holder.status2TranAndCom.setText(statusIn.getReposts_count() + "转发");
                 holder.status2TranAndCom.setVisibility(View.VISIBLE);
-            } else if (statusIn.getComments_count() != 0) {
+            } else {
                 holder.status2TranAndCom.setText(statusIn.getComments_count() + "评论");
                 holder.status2TranAndCom.setVisibility(View.VISIBLE);
             }
             holder.status2RL.setVisibility(View.VISIBLE);
 
-            if(statusIn.getPic_urls() != null && statusIn.getPic_urls().size()>0){
+            if (statusIn.getPic_urls() != null && statusIn.getPic_urls().size() > 0) {
                 StatusGridViewAdapter statusGridViewInAdapter = new StatusGridViewAdapter(mContext);
                 holder.gridViewForStatus2.setAdapter(statusGridViewInAdapter);
                 statusGridViewInAdapter.setmThumbnailPics(statusIn.getPic_urls());
                 holder.gridViewForStatus2.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 holder.gridViewForStatus2.setVisibility(View.GONE);
             }
 
         } else {
             holder.status2TranAndCom.setVisibility(View.GONE);
-//            holder.status2TranAndCom.setText("");
-//            holder.status2TvContent.setText("");
+            holder.status2TranAndCom.setText("");
+            holder.status2TvContent.setText("");
             holder.status2RL.setVisibility(View.GONE);
             holder.status2TvContent.setVisibility(View.GONE);
         }
@@ -132,13 +143,13 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private CardView cardView;
+        private LinearLayout cardView;
         private RoundImageView userIcon;
         private TextView userName;
         private TextView statusFromTime;
         private TextView statusTvContent;
         private TextView statusTranAndCom;
-        private RelativeLayout status2RL;
+        private LinearLayout status2RL;
         private TextView status2TvContent;
         private TextView status2TranAndCom;
         private ExpandGridView gridViewForStatus;
@@ -146,22 +157,23 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            cardView = (CardView) itemView.findViewById(R.id.card_view);
+            cardView = (LinearLayout) itemView.findViewById(R.id.card_view);
             userIcon = (RoundImageView) itemView.findViewById(R.id.user_icon);
             userName = (TextView) itemView.findViewById(R.id.user_name);
             statusTvContent = (TextView) itemView.findViewById(R.id.status_tv_content);
             statusFromTime = (TextView) itemView.findViewById(R.id.status_from_time);
             statusTranAndCom = (TextView) itemView.findViewById(R.id.status_transmit_comment);
             gridViewForStatus = (ExpandGridView) itemView.findViewById(R.id.status_gd);
-            status2RL = (RelativeLayout) itemView.findViewById(R.id.status2_rl);
+            status2RL = (LinearLayout) itemView.findViewById(R.id.status2_rl);
             status2TvContent = (TextView) itemView.findViewById(R.id.status2_tv_content);
             status2TranAndCom = (TextView) itemView.findViewById(R.id.status2_transmit_comment);
             gridViewForStatus2 = (ExpandGridView) itemView.findViewById(R.id.status2_gd);
         }
     }
 
-    public interface RVAdapterOnClick{
+    public interface RVAdapterOnClick {
         public void onMainClick(Status status);
+
         public void onUserPicClick(Status status);
     }
 }

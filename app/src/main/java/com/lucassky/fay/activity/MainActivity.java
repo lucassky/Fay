@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -40,7 +42,8 @@ public class MainActivity extends AppCompatActivity implements Callback {
     private RoundImageView mUserIcon;
     private TextView mUserScreenName;
     private TextView mUserDes;
-
+    private TextView mUserSettings;
+    private Button mBTn;
     private FragmentTransaction mFragTransaction;
     private FragmentManager mFragManager;
 
@@ -83,6 +86,20 @@ public class MainActivity extends AppCompatActivity implements Callback {
         mUserIcon = (RoundImageView) findViewById(R.id.user_icon);
         mUserScreenName = (TextView) findViewById(R.id.user_screen_name);
         mUserDes = (TextView) findViewById(R.id.user_des);
+        mUserSettings = (TextView) findViewById(R.id.drawer_tv_settings);
+        mUserSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("mUserSettings.setOnClickListener");
+            }
+        });
+        mBTn = (Button) findViewById(R.id.drawer_bth_settings);
+        mBTn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("mUserSettings.setOnClickListener");
+            }
+        });
     }
 
     private void setmMainFragment() {

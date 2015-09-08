@@ -100,24 +100,24 @@ public class StatusAdapter extends BaseAdapter {
             viewHolder.statusTranAndCom.setVisibility(View.VISIBLE);
         }
 
-        if(status.getPic_urls() != null && status.getPic_urls().size()>0){
+        if (status.getPic_urls() != null && status.getPic_urls().size() > 0) {
             StatusGridViewAdapter statusGridViewAdapter = new StatusGridViewAdapter(mContext);
             viewHolder.gridViewForStatus.setAdapter(statusGridViewAdapter);
             statusGridViewAdapter.setmThumbnailPics(status.getPic_urls());
             viewHolder.gridViewForStatus.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             viewHolder.gridViewForStatus.setVisibility(View.GONE);
         }
 
 
         if (statusIn != null) {
-            TextUitl.addURLSpan(mContext, "@"+ statusIn.getUser().getName() + ":" + statusIn.getText(), viewHolder.status2TvContent);
+            TextUitl.addURLSpan(mContext, "@" + statusIn.getUser().getName() + ":" + statusIn.getText(), viewHolder.status2TvContent);
             viewHolder.status2TvContent.setMovementMethod(LinkMovementMethod.getInstance());
 
             viewHolder.status2TvContent.setVisibility(View.VISIBLE);
-                if (statusIn.getReposts_count() == 0 && statusIn.getComments_count() == 0) {
-                    viewHolder.status2TranAndCom.setText("");
-                    viewHolder.status2TranAndCom.setVisibility(View.GONE);
+            if (statusIn.getReposts_count() == 0 && statusIn.getComments_count() == 0) {
+                viewHolder.status2TranAndCom.setText("");
+                viewHolder.status2TranAndCom.setVisibility(View.GONE);
             } else if (statusIn.getReposts_count() != 0 && statusIn.getComments_count() != 0) {
                 viewHolder.status2TranAndCom.setText(statusIn.getReposts_count() + "转发 & " + statusIn.getComments_count() + "评论");
                 viewHolder.status2TranAndCom.setVisibility(View.VISIBLE);
@@ -131,12 +131,12 @@ public class StatusAdapter extends BaseAdapter {
             viewHolder.status2RL.setVisibility(View.VISIBLE);
 
 
-            if(statusIn.getPic_urls() != null && statusIn.getPic_urls().size()>0){
+            if (statusIn.getPic_urls() != null && statusIn.getPic_urls().size() > 0) {
                 StatusGridViewAdapter statusGridViewInAdapter = new StatusGridViewAdapter(mContext);
                 viewHolder.gridViewForStatus2.setAdapter(statusGridViewInAdapter);
                 statusGridViewInAdapter.setmThumbnailPics(statusIn.getPic_urls());
                 viewHolder.gridViewForStatus2.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 viewHolder.gridViewForStatus2.setVisibility(View.GONE);
             }
 
