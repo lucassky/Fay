@@ -1,13 +1,17 @@
 package com.lucassky.fay.model.base;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.lucassky.fay.utils.StringUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Administrator on 2015/8/26.
  */
-public class Status {
+public class Status implements Parcelable{
     private String created_at;//微博创建时间
     private long id;//微博ID
     private long mid;//微博MID
@@ -21,7 +25,7 @@ public class Status {
     private String in_reply_to_screen_name;//（暂未支持）回复人昵称
 
 
-    private List<ThumbnailPic> pic_urls;//多个缩略图的数组，官网api说明的是pic_ids这个字段，但是返回值没有
+    private ArrayList<ThumbnailPic> pic_urls;//多个缩略图的数组，官网api说明的是pic_ids这个字段，但是返回值没有
     private String thumbnail_pic;//缩略图片地址，没有时不返回此字段
     private String bmiddle_pic;//中等尺寸图片地址，没有时不返回此字段
     private String original_pic;//原始图片地址，没有时不返回此字段
@@ -36,6 +40,39 @@ public class Status {
     //visible	object	微博的可见性及指定可见分组信息。该object中type取值，0：普通微博，1：私密微博，3：指定分组微博，4：密友微博；list_id为分组的组号
     //pic_ids	object	微博配图ID。多图时返回多图ID，用来拼接图片url。用返回字段thumbnail_pic的地址配上该返回字段的图片ID，即可得到多个图片url。
     //ad	object array	微博流内的推广微博ID
+
+    protected Status(Parcel in) {
+        created_at = in.readString();
+        id = in.readLong();
+        mid = in.readLong();
+        idstr = in.readString();
+        text = in.readString();
+        source = in.readString();
+        in_reply_to_status_id = in.readString();
+        in_reply_to_user_id = in.readString();
+        in_reply_to_screen_name = in.readString();
+        thumbnail_pic = in.readString();
+        bmiddle_pic = in.readString();
+        original_pic = in.readString();
+        retweeted_status = in.readParcelable(Status.class.getClassLoader());
+        reposts_count = in.readInt();
+        comments_count = in.readInt();
+        attitudes_count = in.readInt();
+        mlevel = in.readInt();
+        user = in.readParcelable(User.class.getClassLoader());
+    }
+
+    public static final Creator<Status> CREATOR = new Creator<Status>() {
+        @Override
+        public Status createFromParcel(Parcel in) {
+            return new Status(in);
+        }
+
+        @Override
+        public Status[] newArray(int size) {
+            return new Status[size];
+        }
+    };
 
     public String getCreated_at() {
         return created_at;
@@ -133,11 +170,11 @@ public class Status {
         this.geo = geo;
     }
 
-    public List<ThumbnailPic> getPic_urls() {
+    public ArrayList<ThumbnailPic> getPic_urls() {
         return pic_urls;
     }
 
-    public void setPic_urls(List<ThumbnailPic> pic_urls) {
+    public void setPic_urls(ArrayList<ThumbnailPic> pic_urls) {
         this.pic_urls = pic_urls;
     }
 
@@ -213,4 +250,30 @@ public class Status {
         this.mlevel = mlevel;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(created_at);
+        dest.writeLong(id);
+        dest.writeLong(mid);
+        dest.writeString(idstr);
+        dest.writeString(text);
+        dest.writeString(source);
+        dest.writeString(in_reply_to_status_id);
+        dest.writeString(in_reply_to_user_id);
+        dest.writeString(in_reply_to_screen_name);
+        dest.writeString(thumbnail_pic);
+        dest.writeString(bmiddle_pic);
+        dest.writeString(original_pic);
+        dest.writeParcelable(retweeted_status, flags);
+        dest.writeInt(reposts_count);
+        dest.writeInt(comments_count);
+        dest.writeInt(attitudes_count);
+        dest.writeInt(mlevel);
+        dest.writeParcelable(user,flags);
+    }
 }

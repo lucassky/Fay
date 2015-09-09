@@ -7,12 +7,14 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lucassky.fay.R;
 import com.lucassky.fay.model.base.Status;
+import com.lucassky.fay.model.base.ThumbnailPic;
 import com.lucassky.fay.model.base.User;
 import com.lucassky.fay.utils.StringUtil;
 import com.lucassky.fay.utils.TextUitl;
@@ -58,9 +60,9 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Status status = mStatuses.get(position);
+        final Status status = mStatuses.get(position);
         mStatus = status;
-        Status statusIn = status.getRetweeted_status();
+        final Status statusIn = status.getRetweeted_status();
         Picasso.with(mContext).load(status.getUser().getAvatar_large()).into(holder.userIcon);
         holder.cardView.setOnClickListener(new OnClickListener() {
             @Override
@@ -89,6 +91,12 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
             StatusGridViewAdapter statusGridViewAdapter = new StatusGridViewAdapter(mContext);
             holder.gridViewForStatus.setAdapter(statusGridViewAdapter);
             statusGridViewAdapter.setmThumbnailPics(status.getPic_urls());
+            holder.gridViewForStatus.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    mRVAdapterOnClick.onStatusPicClick(status.getPic_urls(),position);
+                }
+            });
             holder.gridViewForStatus.setVisibility(View.VISIBLE);
         } else {
             holder.gridViewForStatus.setVisibility(View.GONE);
@@ -122,6 +130,12 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
             if (statusIn.getPic_urls() != null && statusIn.getPic_urls().size() > 0) {
                 StatusGridViewAdapter statusGridViewInAdapter = new StatusGridViewAdapter(mContext);
                 holder.gridViewForStatus2.setAdapter(statusGridViewInAdapter);
+                holder.gridViewForStatus2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        mRVAdapterOnClick.onStatusPicClick(statusIn.getPic_urls(),position);
+                    }
+                });
                 statusGridViewInAdapter.setmThumbnailPics(statusIn.getPic_urls());
                 holder.gridViewForStatus2.setVisibility(View.VISIBLE);
             } else {
@@ -175,5 +189,7 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
         public void onMainClick(Status status);
 
         public void onUserPicClick(Status status);
+
+        public void onStatusPicClick(ArrayList<ThumbnailPic> thumbnailPics,int pos);
     }
 }

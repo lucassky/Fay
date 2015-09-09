@@ -26,4 +26,5 @@
     <color name="red">#FF5722</color>
     <color name="dark_red">#F4511E</color>
     <color name="accent_red">#FF6347</color>
+    <color name="vp_bg">#949594</color>
 </resources>

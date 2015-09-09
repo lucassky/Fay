@@ -1,10 +1,13 @@
 package com.lucassky.fay.model.base;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by lucas on 2015/8/26.
  * WeiBo user model
  */
-public class User {
+public class User implements Parcelable{
     private long id;//用户UID
     private String idstr;//字符串型的用户UID
     private String screen_name;//用户昵称
@@ -39,6 +42,49 @@ public class User {
     private int online_status;//用户的在线状态，0：不在线、1：在线
     private int bi_followers_count;//用户的互粉数
     private String lang;//用户当前的语言版本，zh-cn：简体中文，zh-tw：繁体中文，en：英语
+
+    protected User(Parcel in) {
+        id = in.readLong();
+        idstr = in.readString();
+        screen_name = in.readString();
+        name = in.readString();
+        province = in.readInt();
+        city = in.readInt();
+        location = in.readString();
+        description = in.readString();
+        url = in.readString();
+        profile_image_url = in.readString();
+        profile_url = in.readString();
+        domain = in.readString();
+        weihao = in.readString();
+        gender = in.readString();
+        followers_count = in.readInt();
+        friends_count = in.readInt();
+        statuses_count = in.readInt();
+        favourites_count = in.readInt();
+        created_at = in.readString();
+        verified_type = in.readInt();
+        remark = in.readString();
+        object = in.readParcelable(Status.class.getClassLoader());
+        avatar_large = in.readString();
+        avatar_hd = in.readString();
+        verified_reason = in.readString();
+        online_status = in.readInt();
+        bi_followers_count = in.readInt();
+        lang = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public long getId() {
         return id;
@@ -310,5 +356,42 @@ public class User {
 
     public void setLang(String lang) {
         this.lang = lang;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(idstr);
+        dest.writeString(screen_name);
+        dest.writeString(name);
+        dest.writeInt(province);
+        dest.writeInt(city);
+        dest.writeString(location);
+        dest.writeString(description);
+        dest.writeString(url);
+        dest.writeString(profile_image_url);
+        dest.writeString(profile_url);
+        dest.writeString(domain);
+        dest.writeString(weihao);
+        dest.writeString(gender);
+        dest.writeInt(followers_count);
+        dest.writeInt(friends_count);
+        dest.writeInt(statuses_count);
+        dest.writeInt(favourites_count);
+        dest.writeString(created_at);
+        dest.writeInt(verified_type);
+        dest.writeString(remark);
+        dest.writeParcelable(object, flags);
+        dest.writeString(avatar_large);
+        dest.writeString(avatar_hd);
+        dest.writeString(verified_reason);
+        dest.writeInt(online_status);
+        dest.writeInt(bi_followers_count);
+        dest.writeString(lang);
     }
 }

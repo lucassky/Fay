@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -72,7 +73,7 @@ public class StatusAdapter extends BaseAdapter {
             viewHolder.statusFromTime = (TextView) convertView.findViewById(R.id.status_from_time);
             viewHolder.statusTranAndCom = (TextView) convertView.findViewById(R.id.status_transmit_comment);
             viewHolder.gridViewForStatus = (ExpandGridView) convertView.findViewById(R.id.status_gd);
-            viewHolder.status2RL = (RelativeLayout) convertView.findViewById(R.id.status2_rl);
+            viewHolder.status2RL = (LinearLayout) convertView.findViewById(R.id.status2_rl);
             viewHolder.status2TvContent = (TextView) convertView.findViewById(R.id.status2_tv_content);
             viewHolder.status2TranAndCom = (TextView) convertView.findViewById(R.id.status2_transmit_comment);
             viewHolder.gridViewForStatus2 = (ExpandGridView) convertView.findViewById(R.id.status2_gd);
@@ -156,7 +157,7 @@ public class StatusAdapter extends BaseAdapter {
         private TextView statusFromTime;
         private TextView statusTvContent;
         private TextView statusTranAndCom;
-        private RelativeLayout status2RL;
+        private LinearLayout status2RL;
         private TextView status2TvContent;
         private TextView status2TranAndCom;
         private ExpandGridView gridViewForStatus;

@@ -1,5 +1,6 @@
 package com.lucassky.fay.fragment;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,10 +19,13 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lucassky.fay.R;
+import com.lucassky.fay.activity.PreviewPicActivity;
+import com.lucassky.fay.activity.WeiBoDetailActivity;
 import com.lucassky.fay.adapter.StatusAdapter;
 import com.lucassky.fay.adapter.StatusRVAdapter;
 import com.lucassky.fay.model.StatusesResult;
 import com.lucassky.fay.model.base.Status;
+import com.lucassky.fay.model.base.ThumbnailPic;
 import com.lucassky.fay.utils.newwork.HttpManager;
 import com.lucassky.fay.utils.newwork.UrlUitl;
 import com.squareup.okhttp.Callback;
@@ -178,12 +182,23 @@ public class MainFragment extends Fragment implements Callback, AdapterView.OnIt
 
     @Override
     public void onMainClick(Status status) {
+        Intent intent = new Intent(getActivity(), WeiBoDetailActivity.class);
+        intent.putExtra("status",status);
+        startActivity(intent);
         System.out.println(status.getText());
-    }
+}
 
     @Override
     public void onUserPicClick(Status status) {
 
+    }
+
+    @Override
+    public void onStatusPicClick(ArrayList<ThumbnailPic> thumbnailPics, int pos) {
+        Intent intent = new Intent(getActivity(), PreviewPicActivity.class);
+        intent.putParcelableArrayListExtra("thumbnailPics",thumbnailPics);
+        intent.putExtra("pos",pos);
+        startActivity(intent);
     }
 
     /**
@@ -197,7 +212,6 @@ public class MainFragment extends Fragment implements Callback, AdapterView.OnIt
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 
