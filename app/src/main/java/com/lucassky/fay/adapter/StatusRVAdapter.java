@@ -56,12 +56,11 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
     }
 
 
-    private Status mStatus;
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final Status status = mStatuses.get(position);
-        mStatus = status;
+        holder.setPos(position);
+        final Status status = mStatuses.get(holder.getPos());
         final Status statusIn = status.getRetweeted_status();
         Picasso.with(mContext).load(status.getUser().getAvatar_large()).into(holder.userIcon);
         holder.cardView.setOnClickListener(new OnClickListener() {
@@ -71,7 +70,6 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
             }
         });
         TextUitl.addURLSpan(mContext, status.getText(), holder.statusTvContent);
-        holder.setPos(position);
         holder.userName.setText(status.getUser().getName());
         holder.statusFromTime.setText(Html.fromHtml(status.getSource()) + " · " + StringUtil.formarTime(status.getCreated_at()));
         if (status.getReposts_count() == 0 && status.getComments_count() == 0) {
