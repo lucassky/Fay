@@ -59,7 +59,7 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
     private Status mStatus;
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final Status status = mStatuses.get(position);
         mStatus = status;
         final Status statusIn = status.getRetweeted_status();
@@ -67,11 +67,11 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
         holder.cardView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRVAdapterOnClick.onMainClick(mStatus);
+                mRVAdapterOnClick.onMainClick(mStatuses.get(holder.getPos()));
             }
         });
         TextUitl.addURLSpan(mContext, status.getText(), holder.statusTvContent);
-
+        holder.setPos(position);
         holder.userName.setText(status.getUser().getName());
         holder.statusFromTime.setText(Html.fromHtml(status.getSource()) + " · " + StringUtil.formarTime(status.getCreated_at()));
         if (status.getReposts_count() == 0 && status.getComments_count() == 0) {
@@ -168,6 +168,15 @@ public class StatusRVAdapter extends RecyclerView.Adapter<StatusRVAdapter.ViewHo
         private TextView status2TranAndCom;
         private ExpandGridView gridViewForStatus;
         private ExpandGridView gridViewForStatus2;
+        private int pos;
+
+        public int getPos() {
+            return pos;
+        }
+
+        public void setPos(int pos) {
+            this.pos = pos;
+        }
 
         public ViewHolder(View itemView) {
             super(itemView);

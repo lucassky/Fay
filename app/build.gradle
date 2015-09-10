@@ -44,6 +44,8 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:recyclerview-v7:23.0.0'
     compile 'com.android.support:design:23.0.0'
+    compile 'com.facebook.fresco:fresco:0.7.0+'
+    compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.0'
 }
 
 

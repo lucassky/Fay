@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.lucassky.fay.R;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Fresco.initialize(MainActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();

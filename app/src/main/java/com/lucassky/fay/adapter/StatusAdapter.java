@@ -85,6 +85,7 @@ public class StatusAdapter extends BaseAdapter {
         Status status = mStatuses.get(position);
         Status statusIn = status.getRetweeted_status();
         Picasso.with(mContext).load(status.getUser().getAvatar_large()).into(viewHolder.userIcon);
+        viewHolder.setPos(position);
         viewHolder.userName.setText(status.getUser().getName());
         viewHolder.statusFromTime.setText(Html.fromHtml(status.getSource()) + " · " + StringUtil.formarTime(status.getCreated_at()));
         TextUitl.addURLSpan(mContext, status.getText(), viewHolder.statusTvContent);
@@ -152,6 +153,7 @@ public class StatusAdapter extends BaseAdapter {
     }
 
     private static class ViewHolder {
+        int pos;
         private RoundImageView userIcon;
         private TextView userName;
         private TextView statusFromTime;
@@ -162,5 +164,13 @@ public class StatusAdapter extends BaseAdapter {
         private TextView status2TranAndCom;
         private ExpandGridView gridViewForStatus;
         private ExpandGridView gridViewForStatus2;
+
+        public void setPos(int pos) {
+            this.pos = pos;
+        }
+
+        public int getPos() {
+            return pos;
+        }
     }
 }

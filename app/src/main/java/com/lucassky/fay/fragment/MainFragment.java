@@ -189,7 +189,7 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
     }
 
     @Override
-    public void onStatusPicClick(ArrayList<ThumbnailPic> thumbnailPics, int pos) {
+     public void onStatusPicClick(ArrayList<ThumbnailPic> thumbnailPics, int pos) {
         Intent intent = new Intent(getActivity(), PreviewPicActivity.class);
         intent.putParcelableArrayListExtra("thumbnailPics",thumbnailPics);
         intent.putExtra("pos",pos);

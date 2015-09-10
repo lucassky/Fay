@@ -60,6 +60,8 @@ public class Status implements Parcelable{
         attitudes_count = in.readInt();
         mlevel = in.readInt();
         user = in.readParcelable(User.class.getClassLoader());
+        pic_urls = in.createTypedArrayList(ThumbnailPic.CREATOR);
+//        in.readTypedList(pic_urls,ThumbnailPic.CREATOR);
     }
 
     public static final Creator<Status> CREATOR = new Creator<Status>() {
@@ -274,6 +276,7 @@ public class Status implements Parcelable{
         dest.writeInt(comments_count);
         dest.writeInt(attitudes_count);
         dest.writeInt(mlevel);
-        dest.writeParcelable(user,flags);
+        dest.writeParcelable(user, flags);
+        dest.writeTypedList(pic_urls);
     }
 }

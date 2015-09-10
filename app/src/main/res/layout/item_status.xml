@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp">
 
-                <TextView
+                               <TextView
                     android:id="@+id/status2_tv_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
