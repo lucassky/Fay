@@ -2,24 +2,38 @@ package com.lucassky.fay.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.lucassky.fay.R;
 import com.lucassky.fay.adapter.StatusGridViewAdapter;
+import com.lucassky.fay.adapter.StatusRVAdapter;
+import com.lucassky.fay.model.StatusesResult;
 import com.lucassky.fay.model.base.Status;
+import com.lucassky.fay.model.base.ThumbnailPic;
 import com.lucassky.fay.utils.TextUitl;
+import com.lucassky.fay.utils.newwork.HttpManager;
+import com.lucassky.fay.utils.newwork.UrlUitl;
 import com.lucassky.fay.view.ExpandGridView;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
-import org.w3c.dom.Text;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2015/9/9.
  */
-public class WeiBoDetailActivity extends AppCompatActivity {
+public class WeiBoDetailActivity extends AppCompatActivity implements Callback{
     private Toolbar mToolBar;
     private TextView mTVStatusContent;
     private ExpandGridView mEGStatusMain;
@@ -29,7 +43,16 @@ public class WeiBoDetailActivity extends AppCompatActivity {
     private ExpandGridView mEGStatusIn;
     private TextView mTVStatusInReportComment;
 
+    private RecyclerView mListView;
+    private StatusRVAdapter mStatusRVAdapter;
+
     private Status mStatus;
+    private static Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +61,7 @@ public class WeiBoDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mStatus = intent.getParcelableExtra("status");
         initView();
+        HttpManager.getStatusCommtentsByID(this, UrlUitl.WEIBO_REPORTS, mStatus.getId(), 0, 0, 20, 1, 0, this);
     }
 
     private void initView(){
@@ -86,6 +110,49 @@ public class WeiBoDetailActivity extends AppCompatActivity {
             } else if (mStatus.getRetweeted_status().getComments_count() != 0) {
                 mTVStatusInReportComment.setText(mStatus.getRetweeted_status().getComments_count() + "评论");
                 mTVStatusInReportComment.setVisibility(View.VISIBLE);
+            }
+        }
+
+        mListView = (RecyclerView) findViewById(R.id.ac_weibo_detail_lv_reports);
+        mStatusRVAdapter = new StatusRVAdapter(mStatuse, new StatusRVAdapter.RVAdapterOnClick() {
+            @Override
+            public void onMainClick(Status status) {
+
+            }
+
+            @Override
+            public void onUserPicClick(Status status) {
+
+            }
+
+            @Override
+            public void onStatusPicClick(ArrayList<ThumbnailPic> thumbnailPics, int pos) {
+
+            }
+        });
+        mListView.setAdapter(mStatusRVAdapter);
+    }
+
+    @Override
+    public void onFailure(Request request, IOException e) {
+
+    }
+    List<Status> mStatuse = new ArrayList<Status>();
+    @Override
+    public void onResponse(Response response) throws IOException {
+
+        if(UrlUitl.WEIBO_REPORTS.equals(response.request().tag())){
+            String str = response.body().string();
+            Gson gson = new Gson();
+            final StatusesResult statuses = gson.fromJson(str, StatusesResult.class);
+            if(statuses.getStatuses() != null && statuses.getStatuses().size()>0){
+                mStatuse = statuses.getStatuses();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mStatusRVAdapter.setMStatuses(mStatuse);
+                    }
+                });
             }
         }
     }

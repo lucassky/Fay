@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
-
+    <include layout="@layout/toolbar"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp">
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/status_detail_tv_content"
@@ -18,9 +17,9 @@
             android:layout_height="wrap_content"
             android:autoLink="all"
             android:padding="8dp"
-            android:textColor="@android:color/black"
             android:text="arghsahgksghslkfghskfhdfkhgskf福建首个咖啡馆和森林砍伐韩国事故发生过风格豆腐干上市公司三个公司股价累计刚开始看过后"
-            android:textSize="15sp" />
+            android:textColor="@android:color/black"
+            android:textSize="15sp"/>
 
         <com.lucassky.fay.view.ExpandGridView
             android:id="@+id/status_detail_gd"
@@ -32,64 +31,88 @@
             android:numColumns="3"
             android:stretchMode="columnWidth"
             android:verticalSpacing="4dp"
-            android:visibility="gone" />
-    </RelativeLayout>
+            android:visibility="gone"/>
 
-    <LinearLayout
-        android:id="@+id/status2_detail_rl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/line"
-            android:layout_width="4dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/item_status_2_bg" />
-
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/status2_detail_rl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp">
+            android:orientation="horizontal"
+            android:layout_below="@+id/status_detail_gd"
+            android:visibility="gone">
 
             <TextView
-                android:id="@+id/status2_detail_tv_content"
+                android:id="@+id/line"
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/item_status_2_bg"/>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoLink="all"
-                android:padding="5dp"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:visibility="gone" />
+                android:layout_marginLeft="3dp">
 
-            <com.lucassky.fay.view.ExpandGridView
-                android:id="@+id/status2_detail_gd"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/status2_detail_tv_content"
-                android:layout_marginLeft="3dp"
-                android:horizontalSpacing="4dp"
-                android:numColumns="3"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="4dp"
-                android:visibility="gone" />
+                <TextView
+                    android:id="@+id/status2_detail_tv_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="all"
+                    android:padding="5dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:visibility="gone"/>
 
-            <TextView
-                android:id="@+id/status2_detail_transmit_comment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/status2_detail_gd"
-                android:gravity="center_vertical"
-                android:padding="4dp"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="11sp"
-                android:visibility="gone" />
-        </RelativeLayout>
+                <com.lucassky.fay.view.ExpandGridView
+                    android:id="@+id/status2_detail_gd"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/status2_detail_tv_content"
+                    android:layout_marginLeft="3dp"
+                    android:horizontalSpacing="4dp"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="4dp"
+                    android:visibility="gone"/>
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/status2_detail_transmit_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/status2_detail_gd"
+                    android:gravity="center_vertical"
+                    android:padding="4dp"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="11sp"
+                    android:visibility="gone"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/accent_red"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:layout_height="48dp">
+        <TextView
+            android:id="@+id/ac_weibo_detail_tv_reports"
+            android:layout_width="wrap_content"
+            android:text="转发"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/ac_weibo_detail_tv_comments"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@+id/ac_weibo_detail_tv_reports"
+            android:text="评论"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ac_weibo_detail_lv_reports"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

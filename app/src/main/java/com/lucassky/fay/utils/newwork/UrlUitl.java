@@ -9,10 +9,10 @@ public class UrlUitl {
     public static String STATUSES_FRIENDS_TIMELINE = "STATUSES_FRIENDS_TIMELINE";
     //用户的个人信息
     public static String USER_SHOW = "USER_SHOW";
-    //微博的评论列表
-    public static String WEIBO_COMMENTS = "WEIBO_COMMENTS";
     //微博的评论和转发数量
     public static String WEIBO_REPOSTS_COMMENTS_COUNT = "WEIBO_REPOSTS_COMMENTS_COUNT";
+    //微博的评论列表
+    public static String WEIBO_COMMENTS = "WEIBO_COMMENTS";
     //微博的转发微博列表
     public static String WEIBO_REPORTS = "WEIBO_REPORTS";
 
