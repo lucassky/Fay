@@ -45,10 +45,12 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class MainFragment extends Fragment implements Callback,SwipeRefreshLayout.OnRefreshListener,StatusRVAdapter.RVAdapterOnClick {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private final String LOADMORE = "LOADMORE";//loading more tag
+    private final String LOADLAST = "LOADLAST";//loading the last statuses
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -59,8 +61,10 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
     private RecyclerView mLVFStatuses;//关注好友的最新微博
     private LinearLayoutManager mLayoutManager ;
     private List<Status> mStatuses = new ArrayList<Status>();
-//    private StatusAdapter mAdapter;
     private StatusRVAdapter mStatusRVAdapter;
+
+    private boolean isLoadingMore = false;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -101,7 +105,7 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        HttpManager.getStattuesFriends(getActivity(),UrlUitl.STATUSES_FRIENDS_TIMELINE, 0L, 0L, 100, 1, 0, 0, 0, this);
+        HttpManager.getStattuesFriends(getActivity(),LOADLAST, 0L, 0L, 20, 1, 0, 0, 0, this);
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mLVFStatuses = (RecyclerView) view.findViewById(R.id.lv_f_statuses);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
@@ -115,6 +119,23 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
         mLVFStatuses.setLayoutManager(mLayoutManager);
         mStatusRVAdapter = new StatusRVAdapter(mStatuses,this);
         mLVFStatuses.setAdapter(mStatusRVAdapter);
+        mLVFStatuses.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int lastvisiblePos = mLayoutManager.findLastVisibleItemPosition();
+                lastvisiblePos++;
+                if(lastvisiblePos==mStatuses.size()){
+                    System.out.println("需要加载更多了");
+                }
+            }
+        });
+
         mLVFStatuses.setItemAnimator(new DefaultItemAnimator());
         return view;
     }
@@ -151,14 +172,17 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
         String str = response.body().string();
         Gson gson = new Gson();
         final StatusesResult statuses = gson.fromJson(str, StatusesResult.class);
-//                List<Status> statuses = gson.fromJson(str, new TypeToken<List<Status>>() {}.getType());
         final List<Status> statuse = statuses.getStatuses();
         if (statuse != null && statuse.size() > 0) {
-            mStatuse.addAll(0, statuse);
+           if(LOADLAST.equals(response.request().tag())){//loading last statuses
+               mStatuse.addAll(0, statuse);
+           }else{
+               isLoadingMore = false;
+               mStatuse.addAll(statuse);
+           }
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-//                    mAdapter.setmStatuses(mStatuse);
                     mStatusRVAdapter.setMStatuses(mStatuse);
                 }
             });
@@ -169,7 +193,8 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
     @Override
     public void onRefresh() {
         if (mStatuse.size() > 0) {
-            HttpManager.getStattuesFriends(getActivity(), UrlUitl.STATUSES_FRIENDS_TIMELINE, mStatuse.get(0).getId(), 0L, 100, 1, 0, 0, 0, this);
+            isLoadingMore = true;
+            HttpManager.getStattuesFriends(getActivity(),LOADLAST, mStatuse.get(0).getId(), 0L, 100, 1, 0, 0, 0, this);
         } else {
             mSwipeRefreshLayout.setRefreshing(false);
         }

@@ -31,8 +31,8 @@
 
         <!-- 將 spinBars 屬性設定為 false -->
         <item name="spinBars">true</item>
-        <!-- 設定 drawer arrow 的顏色 -->
-        <item name="color">@android:color/white</item>
+    <!-- 設定 drawer arrow 的顏色 -->
+    <item name="color">@android:color/white</item>
     </style>
 
     <!-- Application theme. -->
