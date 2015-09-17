@@ -4,8 +4,7 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/Indigo_nav_color"
-                android:padding="8dp">
+                android:background="@color/Indigo_nav_color">
 
     <TextView
         android:id="@+id/status_detail_tv_content"
@@ -86,9 +85,9 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <include
+    <!--<include
         layout="@layout/report_comment_view"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/status2_detail_rl"/>
+        android:layout_below="@+id/status2_detail_rl"/>-->
 </RelativeLayout>

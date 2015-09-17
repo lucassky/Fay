@@ -63,93 +63,98 @@ public class StatusAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = null;
-        if (convertView == null) {
-            viewHolder = new ViewHolder();
-            convertView = mInflayter.inflate(R.layout.item_status, null);
-            viewHolder.userIcon = (RoundImageView) convertView.findViewById(R.id.user_icon);
-            viewHolder.userName = (TextView) convertView.findViewById(R.id.user_name);
-            viewHolder.statusTvContent = (TextView) convertView.findViewById(R.id.status_tv_content);
-            viewHolder.statusFromTime = (TextView) convertView.findViewById(R.id.status_from_time);
-            viewHolder.statusTranAndCom = (TextView) convertView.findViewById(R.id.status_transmit_comment);
-            viewHolder.gridViewForStatus = (ExpandGridView) convertView.findViewById(R.id.status_gd);
-            viewHolder.status2RL = (LinearLayout) convertView.findViewById(R.id.status2_rl);
-            viewHolder.status2TvContent = (TextView) convertView.findViewById(R.id.status2_tv_content);
-            viewHolder.status2TranAndCom = (TextView) convertView.findViewById(R.id.status2_transmit_comment);
-            viewHolder.gridViewForStatus2 = (ExpandGridView) convertView.findViewById(R.id.status2_gd);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-
-        Status status = mStatuses.get(position);
-        Status statusIn = status.getRetweeted_status();
-        Picasso.with(mContext).load(status.getUser().getAvatar_large()).into(viewHolder.userIcon);
-        viewHolder.setPos(position);
-        viewHolder.userName.setText(status.getUser().getName());
-        viewHolder.statusFromTime.setText(Html.fromHtml(status.getSource()) + " · " + StringUtil.formarTime(status.getCreated_at()));
-        TextUitl.addURLSpan(mContext, status.getText(), viewHolder.statusTvContent);
-        if (status.getReposts_count() == 0 && status.getComments_count() == 0) {
-            viewHolder.statusTranAndCom.setVisibility(View.GONE);
-        } else if (status.getReposts_count() != 0 && status.getComments_count() != 0) {
-            viewHolder.statusTranAndCom.setText(status.getReposts_count() + "转发 & " + status.getComments_count() + "评论");
-            viewHolder.statusTranAndCom.setVisibility(View.VISIBLE);
-        } else if (status.getReposts_count() != 0) {
-            viewHolder.statusTranAndCom.setText(status.getReposts_count() + "转发");
-            viewHolder.statusTranAndCom.setVisibility(View.VISIBLE);
-        } else if (status.getComments_count() != 0) {
-            viewHolder.statusTranAndCom.setText(status.getComments_count() + "评论");
-            viewHolder.statusTranAndCom.setVisibility(View.VISIBLE);
-        }
-
-        if (status.getPic_urls() != null && status.getPic_urls().size() > 0) {
-            StatusGridViewAdapter statusGridViewAdapter = new StatusGridViewAdapter(mContext);
-            viewHolder.gridViewForStatus.setAdapter(statusGridViewAdapter);
-            statusGridViewAdapter.setmThumbnailPics(status.getPic_urls());
-            viewHolder.gridViewForStatus.setVisibility(View.VISIBLE);
-        } else {
-            viewHolder.gridViewForStatus.setVisibility(View.GONE);
-        }
-
-
-        if (statusIn != null) {
-            TextUitl.addURLSpan(mContext, "@" + statusIn.getUser().getName() + ":" + statusIn.getText(), viewHolder.status2TvContent);
-            viewHolder.status2TvContent.setMovementMethod(LinkMovementMethod.getInstance());
-
-            viewHolder.status2TvContent.setVisibility(View.VISIBLE);
-            if (statusIn.getReposts_count() == 0 && statusIn.getComments_count() == 0) {
-                viewHolder.status2TranAndCom.setText("");
-                viewHolder.status2TranAndCom.setVisibility(View.GONE);
-            } else if (statusIn.getReposts_count() != 0 && statusIn.getComments_count() != 0) {
-                viewHolder.status2TranAndCom.setText(statusIn.getReposts_count() + "转发 & " + statusIn.getComments_count() + "评论");
-                viewHolder.status2TranAndCom.setVisibility(View.VISIBLE);
-            } else if (statusIn.getReposts_count() != 0) {
-                viewHolder.status2TranAndCom.setText(statusIn.getReposts_count() + "转发");
-                viewHolder.status2TranAndCom.setVisibility(View.VISIBLE);
-            } else if (statusIn.getComments_count() != 0) {
-                viewHolder.status2TranAndCom.setText(statusIn.getComments_count() + "评论");
-                viewHolder.status2TranAndCom.setVisibility(View.VISIBLE);
-            }
-            viewHolder.status2RL.setVisibility(View.VISIBLE);
-
-
-            if (statusIn.getPic_urls() != null && statusIn.getPic_urls().size() > 0) {
-                StatusGridViewAdapter statusGridViewInAdapter = new StatusGridViewAdapter(mContext);
-                viewHolder.gridViewForStatus2.setAdapter(statusGridViewInAdapter);
-                statusGridViewInAdapter.setmThumbnailPics(statusIn.getPic_urls());
-                viewHolder.gridViewForStatus2.setVisibility(View.VISIBLE);
+        if(position == 0){
+//            convertView = mInflayter.inflate(R.layout.item_status, null);
+            return mInflayter.inflate(R.layout.report_comment_view, null);
+        }else{
+            ViewHolder viewHolder = null;
+            if (convertView == null || convertView instanceof LinearLayout) {
+                viewHolder = new ViewHolder();
+                convertView = mInflayter.inflate(R.layout.item_status, null);
+                viewHolder.userIcon = (RoundImageView) convertView.findViewById(R.id.user_icon);
+                viewHolder.userName = (TextView) convertView.findViewById(R.id.user_name);
+                viewHolder.statusTvContent = (TextView) convertView.findViewById(R.id.status_tv_content);
+                viewHolder.statusFromTime = (TextView) convertView.findViewById(R.id.status_from_time);
+                viewHolder.statusTranAndCom = (TextView) convertView.findViewById(R.id.status_transmit_comment);
+                viewHolder.gridViewForStatus = (ExpandGridView) convertView.findViewById(R.id.status_gd);
+                viewHolder.status2RL = (LinearLayout) convertView.findViewById(R.id.status2_rl);
+                viewHolder.status2TvContent = (TextView) convertView.findViewById(R.id.status2_tv_content);
+                viewHolder.status2TranAndCom = (TextView) convertView.findViewById(R.id.status2_transmit_comment);
+                viewHolder.gridViewForStatus2 = (ExpandGridView) convertView.findViewById(R.id.status2_gd);
+                convertView.setTag(viewHolder);
             } else {
-                viewHolder.gridViewForStatus2.setVisibility(View.GONE);
+                viewHolder = (ViewHolder) convertView.getTag();
             }
 
-        } else {
-            viewHolder.status2TranAndCom.setVisibility(View.GONE);
-            viewHolder.status2TranAndCom.setText("");
-            viewHolder.status2TvContent.setText("");
-            viewHolder.status2RL.setVisibility(View.GONE);
-            viewHolder.status2TvContent.setVisibility(View.GONE);
+            Status status = mStatuses.get(position);
+            Status statusIn = status.getRetweeted_status();
+            Picasso.with(mContext).load(status.getUser().getAvatar_large()).into(viewHolder.userIcon);
+            viewHolder.setPos(position);
+            viewHolder.userName.setText(status.getUser().getName());
+            viewHolder.statusFromTime.setText(Html.fromHtml(status.getSource()) + " · " + StringUtil.formarTime(status.getCreated_at()));
+            TextUitl.addURLSpan(mContext, status.getText(), viewHolder.statusTvContent);
+            if (status.getReposts_count() == 0 && status.getComments_count() == 0) {
+                viewHolder.statusTranAndCom.setVisibility(View.GONE);
+            } else if (status.getReposts_count() != 0 && status.getComments_count() != 0) {
+                viewHolder.statusTranAndCom.setText(status.getReposts_count() + "转发 & " + status.getComments_count() + "评论");
+                viewHolder.statusTranAndCom.setVisibility(View.VISIBLE);
+            } else if (status.getReposts_count() != 0) {
+                viewHolder.statusTranAndCom.setText(status.getReposts_count() + "转发");
+                viewHolder.statusTranAndCom.setVisibility(View.VISIBLE);
+            } else if (status.getComments_count() != 0) {
+                viewHolder.statusTranAndCom.setText(status.getComments_count() + "评论");
+                viewHolder.statusTranAndCom.setVisibility(View.VISIBLE);
+            }
+
+            if (status.getPic_urls() != null && status.getPic_urls().size() > 0) {
+                StatusGridViewAdapter statusGridViewAdapter = new StatusGridViewAdapter(mContext);
+                viewHolder.gridViewForStatus.setAdapter(statusGridViewAdapter);
+                statusGridViewAdapter.setmThumbnailPics(status.getPic_urls());
+                viewHolder.gridViewForStatus.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.gridViewForStatus.setVisibility(View.GONE);
+            }
+
+
+            if (statusIn != null) {
+                TextUitl.addURLSpan(mContext, "@" + statusIn.getUser().getName() + ":" + statusIn.getText(), viewHolder.status2TvContent);
+                viewHolder.status2TvContent.setMovementMethod(LinkMovementMethod.getInstance());
+
+                viewHolder.status2TvContent.setVisibility(View.VISIBLE);
+                if (statusIn.getReposts_count() == 0 && statusIn.getComments_count() == 0) {
+                    viewHolder.status2TranAndCom.setText("");
+                    viewHolder.status2TranAndCom.setVisibility(View.GONE);
+                } else if (statusIn.getReposts_count() != 0 && statusIn.getComments_count() != 0) {
+                    viewHolder.status2TranAndCom.setText(statusIn.getReposts_count() + "转发 & " + statusIn.getComments_count() + "评论");
+                    viewHolder.status2TranAndCom.setVisibility(View.VISIBLE);
+                } else if (statusIn.getReposts_count() != 0) {
+                    viewHolder.status2TranAndCom.setText(statusIn.getReposts_count() + "转发");
+                    viewHolder.status2TranAndCom.setVisibility(View.VISIBLE);
+                } else if (statusIn.getComments_count() != 0) {
+                    viewHolder.status2TranAndCom.setText(statusIn.getComments_count() + "评论");
+                    viewHolder.status2TranAndCom.setVisibility(View.VISIBLE);
+                }
+                viewHolder.status2RL.setVisibility(View.VISIBLE);
+
+
+                if (statusIn.getPic_urls() != null && statusIn.getPic_urls().size() > 0) {
+                    StatusGridViewAdapter statusGridViewInAdapter = new StatusGridViewAdapter(mContext);
+                    viewHolder.gridViewForStatus2.setAdapter(statusGridViewInAdapter);
+                    statusGridViewInAdapter.setmThumbnailPics(statusIn.getPic_urls());
+                    viewHolder.gridViewForStatus2.setVisibility(View.VISIBLE);
+                } else {
+                    viewHolder.gridViewForStatus2.setVisibility(View.GONE);
+                }
+
+            } else {
+                viewHolder.status2TranAndCom.setVisibility(View.GONE);
+                viewHolder.status2TranAndCom.setText("");
+                viewHolder.status2TvContent.setText("");
+                viewHolder.status2RL.setVisibility(View.GONE);
+                viewHolder.status2TvContent.setVisibility(View.GONE);
+            }
+            return convertView;
         }
-        return convertView;
     }
 
     private static class ViewHolder {

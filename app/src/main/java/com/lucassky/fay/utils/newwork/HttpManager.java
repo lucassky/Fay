@@ -18,6 +18,18 @@ public class HttpManager {
      */
     protected static final String KEY_ACCESS_TOKEN = "access_token";
 
+    /**
+     * @param Context
+     * @param tag string 请求的tag
+     * @param since_id 若指定此参数，则返回ID比since_id大的微博（即比since_id时间晚的微博），默认为0。
+     * @param max_id int64	若指定此参数，则返回ID小于或等于max_id的微博，默认为0。
+     * @param count int	单页返回的记录条数，最大不超过100，默认为20。
+     * @param page int	返回结果的页码，默认为1。
+     * @param base_app int	是否只获取当前应用的数据。0为否（所有数据），1为是（仅当前应用），默认为0。
+     * @param trim_user int	返回值中user字段开关，0：返回完整user字段、1：user字段仅返回user_id，默认为0。
+     * @param featureType int	过滤类型ID，0：全部、1：原创、2：图片、3：视频、4：音乐，默认为0。
+     * @param callback
+     */
     public static void getStattuesFriends(Context Context, String tag, long since_id, long max_id, int count, int page, int base_app, int trim_user, int featureType, Callback callback) {
         WeiboParameters params = new WeiboParameters(Constants.APP_KEY);
         params.put(KEY_ACCESS_TOKEN, AccessTokenKeeper.readAccessToken(Context).getToken());

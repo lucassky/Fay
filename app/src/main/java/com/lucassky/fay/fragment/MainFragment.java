@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -63,7 +64,11 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
     private List<Status> mStatuses = new ArrayList<Status>();
     private StatusRVAdapter mStatusRVAdapter;
 
+    private LinearLayout mFooter;
+
     private boolean isLoadingMore = false;
+
+    private int pageIndex = 1;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -105,7 +110,7 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        HttpManager.getStattuesFriends(getActivity(),LOADLAST, 0L, 0L, 20, 1, 0, 0, 0, this);
+        HttpManager.getStattuesFriends(getActivity(),LOADLAST, 0L, 0L, 20, pageIndex, 0, 0, 0, this);
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mLVFStatuses = (RecyclerView) view.findViewById(R.id.lv_f_statuses);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
@@ -114,6 +119,8 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
 //        mAdapter = new StatusAdapter(mStatuses, getActivity());
 //        mLVFStatuses.setAdapter(mAdapter);
 //        mLVFStatuses.setOnItemClickListener(this);
+
+        mFooter = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.footer,null);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mLVFStatuses.setLayoutManager(mLayoutManager);
@@ -131,7 +138,12 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
                 int lastvisiblePos = mLayoutManager.findLastVisibleItemPosition();
                 lastvisiblePos++;
                 if(lastvisiblePos==mStatuses.size()){
-                    System.out.println("需要加载更多了");
+//                    mLVFStatuses.addView(mFooter);
+                    if(!isLoadingMore){
+                        System.out.println("需要加载更多了");
+                        isLoadingMore = true;
+                        HttpManager.getStattuesFriends(getActivity(), LOADMORE, 0L, 0L, 20, pageIndex, 0, 0, 0, MainFragment.this);
+                    }
                 }
             }
         });
@@ -173,19 +185,31 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
         Gson gson = new Gson();
         final StatusesResult statuses = gson.fromJson(str, StatusesResult.class);
         final List<Status> statuse = statuses.getStatuses();
-        if (statuse != null && statuse.size() > 0) {
-           if(LOADLAST.equals(response.request().tag())){//loading last statuses
-               mStatuse.addAll(0, statuse);
-           }else{
-               isLoadingMore = false;
-               mStatuse.addAll(statuse);
-           }
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    mStatusRVAdapter.setMStatuses(mStatuse);
-                }
-            });
+
+        if(LOADLAST.equals(response.request().tag())){//loading last statuses
+            if (statuse != null && statuse.size() > 0) {
+                mStatuse.addAll(0, statuse);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mStatusRVAdapter.setMStatuses(mStatuse);
+                    }
+                });
+            }
+        }else{
+            if(statuse != null && statuse.size() > 0){
+                pageIndex++;
+                isLoadingMore = false;
+                mStatuse.addAll(statuse);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mStatusRVAdapter.setMStatuses(mStatuse);
+                    }
+                });
+            }
+
+
         }
         System.out.println("response" + statuses.toString());
 }
