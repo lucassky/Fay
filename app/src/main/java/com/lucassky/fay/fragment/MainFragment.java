@@ -45,7 +45,7 @@ import java.util.List;
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment implements Callback,SwipeRefreshLayout.OnRefreshListener,StatusRVAdapter.RVAdapterOnClick {
+public class MainFragment extends Fragment implements Callback, SwipeRefreshLayout.OnRefreshListener, StatusRVAdapter.RVAdapterOnClick {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -60,7 +60,7 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
     private OnFragmentInteractionListener mListener;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mLVFStatuses;//关注好友的最新微博
-    private LinearLayoutManager mLayoutManager ;
+    private LinearLayoutManager mLayoutManager;
     private List<Status> mStatuses = new ArrayList<Status>();
     private StatusRVAdapter mStatusRVAdapter;
 
@@ -110,7 +110,7 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        HttpManager.getStattuesFriends(getActivity(),LOADLAST, 0L, 0L, 20, pageIndex, 0, 0, 0, this);
+        HttpManager.getStattuesFriends(getActivity(), LOADLAST, 0L, 0L, 20, pageIndex, 0, 0, 0, this);
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mLVFStatuses = (RecyclerView) view.findViewById(R.id.lv_f_statuses);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
@@ -120,11 +120,11 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
 //        mLVFStatuses.setAdapter(mAdapter);
 //        mLVFStatuses.setOnItemClickListener(this);
 
-        mFooter = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.footer,null);
+        mFooter = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.footer, null);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mLVFStatuses.setLayoutManager(mLayoutManager);
-        mStatusRVAdapter = new StatusRVAdapter(mStatuses,this);
+        mStatusRVAdapter = new StatusRVAdapter(mStatuses, this);
         mLVFStatuses.setAdapter(mStatusRVAdapter);
         mLVFStatuses.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -137,9 +137,9 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
                 super.onScrolled(recyclerView, dx, dy);
                 int lastvisiblePos = mLayoutManager.findLastVisibleItemPosition();
                 lastvisiblePos++;
-                if(lastvisiblePos==mStatuses.size()){
+                if (lastvisiblePos == mStatuses.size()) {
 //                    mLVFStatuses.addView(mFooter);
-                    if(!isLoadingMore){
+                    if (!isLoadingMore) {
                         System.out.println("需要加载更多了");
                         isLoadingMore = true;
                         HttpManager.getStattuesFriends(getActivity(), LOADMORE, 0L, 0L, 20, pageIndex, 0, 0, 0, MainFragment.this);
@@ -168,7 +168,12 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
 
     @Override
     public void onFailure(Request request, IOException e) {
-
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     private List<Status> mStatuse = new ArrayList<Status>();
@@ -186,7 +191,7 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
         final StatusesResult statuses = gson.fromJson(str, StatusesResult.class);
         final List<Status> statuse = statuses.getStatuses();
 
-        if(LOADLAST.equals(response.request().tag())){//loading last statuses
+        if (LOADLAST.equals(response.request().tag())) {//loading last statuses
             if (statuse != null && statuse.size() > 0) {
                 mStatuse.addAll(0, statuse);
                 mHandler.post(new Runnable() {
@@ -196,8 +201,8 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
                     }
                 });
             }
-        }else{
-            if(statuse != null && statuse.size() > 0){
+        } else {
+            if (statuse != null && statuse.size() > 0) {
                 pageIndex++;
                 isLoadingMore = false;
                 mStatuse.addAll(statuse);
@@ -208,17 +213,15 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
                     }
                 });
             }
-
-
         }
         System.out.println("response" + statuses.toString());
-}
+    }
 
     @Override
     public void onRefresh() {
         if (mStatuse.size() > 0) {
             isLoadingMore = true;
-            HttpManager.getStattuesFriends(getActivity(),LOADLAST, mStatuse.get(0).getId(), 0L, 100, 1, 0, 0, 0, this);
+            HttpManager.getStattuesFriends(getActivity(), LOADLAST, mStatuse.get(0).getId(), 0L, 20, 1, 0, 0, 0, this);
         } else {
             mSwipeRefreshLayout.setRefreshing(false);
         }
@@ -227,10 +230,10 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
     @Override
     public void onMainClick(Status status) {
         Intent intent = new Intent(getActivity(), WeiBoDetailActivity.class);
-        intent.putExtra("status",status);
+        intent.putExtra("status", status);
         startActivity(intent);
         System.out.println(status.getText());
-}
+    }
 
     @Override
     public void onUserPicClick(Status status) {
@@ -238,10 +241,10 @@ public class MainFragment extends Fragment implements Callback,SwipeRefreshLayou
     }
 
     @Override
-     public void onStatusPicClick(ArrayList<ThumbnailPic> thumbnailPics, int pos) {
+    public void onStatusPicClick(ArrayList<ThumbnailPic> thumbnailPics, int pos) {
         Intent intent = new Intent(getActivity(), PreviewPicActivity.class);
-        intent.putParcelableArrayListExtra("thumbnailPics",thumbnailPics);
-        intent.putExtra("pos",pos);
+        intent.putParcelableArrayListExtra("thumbnailPics", thumbnailPics);
+        intent.putExtra("pos", pos);
         startActivity(intent);
     }
 

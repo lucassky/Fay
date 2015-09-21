@@ -15,6 +15,10 @@ public class UrlUitl {
     public static String WEIBO_COMMENTS = "WEIBO_COMMENTS";
     //微博的转发微博列表
     public static String WEIBO_REPORTS = "WEIBO_REPORTS";
+    //搜索某话题下的微博
+    public static String SEARCH_TOPICS = "SEARCH_TOPICS";
+    //获取当前用户的收藏列表
+    public static String FAVORITES= "FAVORITES";
 
     public static String getRequestUrl(String key) {
         String urlSuffix = "";
@@ -22,12 +26,16 @@ public class UrlUitl {
             urlSuffix = "statuses/friends_timeline.json";
         } else if (USER_SHOW.equals(key)) {
             urlSuffix = "users/show.json";
-        }else if (WEIBO_COMMENTS.equals(key)){
+        } else if (WEIBO_COMMENTS.equals(key)) {
             urlSuffix = "comments/show.json";
-        }else if(WEIBO_REPOSTS_COMMENTS_COUNT.equals(key)){
+        } else if (WEIBO_REPOSTS_COMMENTS_COUNT.equals(key)) {
             urlSuffix = "statuses/count.json";
-        }else if(WEIBO_REPORTS.equals(key)){
+        } else if (WEIBO_REPORTS.equals(key)) {
             urlSuffix = "statuses/repost_timeline.json";
+        } else if (SEARCH_TOPICS.equals(key)) {
+            urlSuffix = "search/topics.json";
+        }else if (FAVORITES.equals(key)) {
+            urlSuffix = "favorites.json";
         }
         return ROOT + urlSuffix;
     }

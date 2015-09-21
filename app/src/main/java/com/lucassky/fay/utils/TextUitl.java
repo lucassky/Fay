@@ -2,6 +2,7 @@ package com.lucassky.fay.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -22,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lucassky.fay.R;
+import com.lucassky.fay.activity.WeiBoTopicActivity;
+import com.lucassky.fay.activity.WeiBoUrlDetailActivity;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -54,7 +57,10 @@ public class TextUitl {
                             ClickableSpan clickableSpan = new ClickableSpan() {
                                 @Override
                                 public void onClick(View widget) {
-                                    Toast.makeText(activity,"Link:"+sr.toString(),Toast.LENGTH_LONG).show();
+//                                    Toast.makeText(activity,"Link:"+sr.toString(),Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(activity, WeiBoUrlDetailActivity.class);
+                                    intent.putExtra("url",sr.toString());
+                                    activity.startActivity(intent);
                                 }
                             };
                             ss.setSpan(clickableSpan, i, j,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -104,7 +110,8 @@ public class TextUitl {
                 if (strarray[i] == '#') {
                     if (!start) {
                         start = true;
-                        sb = new StringBuffer("weibo://weibo.view/");
+                        sb = new StringBuffer("#");
+//                        sb = new StringBuffer("weibo://weibo.view/");
                         startIndex = i;
                     } else {
                         sb.append('#');
@@ -112,7 +119,10 @@ public class TextUitl {
                         ClickableSpan clickableSpan = new ClickableSpan() {
                             @Override
                             public void onClick(View widget) {
-                                Toast.makeText(activity,"strTopic:" + strTopic,Toast.LENGTH_LONG).show();
+//                                Toast.makeText(activity,"strTopic:" + strTopic,Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(activity, WeiBoTopicActivity.class);
+                                intent.putExtra("topic",strTopic);
+                                activity.startActivity(intent);
                             }
                         };
                         ss.setSpan(clickableSpan, startIndex, i + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
