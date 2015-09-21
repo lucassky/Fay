@@ -127,7 +127,7 @@ public class WeiBoTopicActivity extends AppCompatActivity implements Callback, S
     @Override
     public void onFailure(Request request, IOException e) {
         mHandler.post(new Runnable() {
-            @Override
+                @Override
             public void run() {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
