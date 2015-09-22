@@ -47,5 +47,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_wei_bo_topic">WeiBoTopicActivity</string>
+    <string name="title_activity_favorites">FavoritesActivity</string>
 
 </resources>

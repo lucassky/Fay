@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -45,7 +46,7 @@ import java.util.List;
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment implements Callback, SwipeRefreshLayout.OnRefreshListener, StatusRVAdapter.RVAdapterOnClick {
+public class MainFragment extends Fragment implements Callback, SwipeRefreshLayout.OnRefreshListener,AdapterView.OnItemClickListener,StatusAdapter.OnAdapterOnClick {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -59,10 +60,10 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
 
     private OnFragmentInteractionListener mListener;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView mLVFStatuses;//关注好友的最新微博
-    private LinearLayoutManager mLayoutManager;
+    private ListView mLVFStatuses;//关注好友的最新微博
+//    private LinearLayoutManager mLayoutManager;
     private List<Status> mStatuses = new ArrayList<Status>();
-    private StatusRVAdapter mStatusRVAdapter;
+    private StatusAdapter mStatusAdapter;
 
     private LinearLayout mFooter;
 
@@ -112,33 +113,23 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         HttpManager.getStattuesFriends(getActivity(), LOADLAST, 0L, 0L, 20, pageIndex, 0, 0, 0, this);
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        mLVFStatuses = (RecyclerView) view.findViewById(R.id.lv_f_statuses);
+        mFooter = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.footer, null);
+        mLVFStatuses = (ListView) view.findViewById(R.id.lv_f_statuses);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setRefreshing(true);
-//        mAdapter = new StatusAdapter(mStatuses, getActivity());
-//        mLVFStatuses.setAdapter(mAdapter);
-//        mLVFStatuses.setOnItemClickListener(this);
-
-        mFooter = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.footer, null);
-
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mLVFStatuses.setLayoutManager(mLayoutManager);
-        mStatusRVAdapter = new StatusRVAdapter(mStatuses, this);
-        mLVFStatuses.setAdapter(mStatusRVAdapter);
-        mLVFStatuses.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mStatusAdapter = new StatusAdapter(mStatuses, getActivity(),this);
+        mLVFStatuses.setAdapter(mStatusAdapter);
+        mLVFStatuses.setOnItemClickListener(this);
+        mLVFStatuses.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
             }
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int lastvisiblePos = mLayoutManager.findLastVisibleItemPosition();
-                lastvisiblePos++;
-                if (lastvisiblePos == mStatuses.size()) {
-//                    mLVFStatuses.addView(mFooter);
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if ((visibleItemCount + firstVisibleItem) == mStatuses.size()) {
                     if (!isLoadingMore) {
                         System.out.println("需要加载更多了");
                         isLoadingMore = true;
@@ -148,7 +139,31 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
             }
         });
 
-        mLVFStatuses.setItemAnimator(new DefaultItemAnimator());
+//        mLayoutManager = new LinearLayoutManager(getActivity());
+//        mLVFStatuses.setLayoutManager(mLayoutManager);
+//        mStatusRVAdapter = new StatusRVAdapter(mStatuses, this);
+//        mLVFStatuses.setAdapter(mStatusRVAdapter);
+//        mLVFStatuses.setOn(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                int lastvisiblePos = mLayoutManager.findLastVisibleItemPosition();
+//                lastvisiblePos++;
+//                if (lastvisiblePos == mStatuses.size()) {
+//                    if (!isLoadingMore) {
+//                        System.out.println("需要加载更多了");
+//                        isLoadingMore = true;
+//                        HttpManager.getStattuesFriends(getActivity(), LOADMORE, 0L, 0L, 20, pageIndex, 0, 0, 0, MainFragment.this);
+//                    }
+//                }
+//            }
+//        });
+
         return view;
     }
 
@@ -197,7 +212,7 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mStatusRVAdapter.setMStatuses(mStatuse);
+                        mStatusAdapter.setmStatuses(mStatuse);
                     }
                 });
             }
@@ -209,7 +224,7 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mStatusRVAdapter.setMStatuses(mStatuse);
+                        mStatusAdapter.setmStatuses(mStatuse);
                     }
                 });
             }
@@ -235,9 +250,10 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
         System.out.println(status.getText());
     }
 
+
     @Override
     public void onUserPicClick(Status status) {
-
+        System.out.println(status.getUser().getScreen_name());
     }
 
     @Override
@@ -246,6 +262,14 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
         intent.putParcelableArrayListExtra("thumbnailPics", thumbnailPics);
         intent.putExtra("pos", pos);
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(getActivity(), WeiBoDetailActivity.class);
+        intent.putExtra("status", mStatuses.get(position));
+        startActivity(intent);
+        System.out.println(mStatuses.get(position).getText());
     }
 
     /**

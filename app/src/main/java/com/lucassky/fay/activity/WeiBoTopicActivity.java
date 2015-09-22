@@ -12,10 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lucassky.fay.R;
+import com.lucassky.fay.adapter.StatusAdapter;
 import com.lucassky.fay.adapter.StatusRVAdapter;
 import com.lucassky.fay.model.StatusesResult;
 import com.lucassky.fay.model.base.Status;
@@ -33,15 +36,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WeiBoTopicActivity extends AppCompatActivity implements Callback, StatusRVAdapter.RVAdapterOnClick, SwipeRefreshLayout.OnRefreshListener {
+public class WeiBoTopicActivity extends AppCompatActivity implements Callback, StatusAdapter.OnAdapterOnClick, SwipeRefreshLayout.OnRefreshListener {
     private final String LOADMORE = "LOADMORE";//loading more tag
     private final String LOADLAST = "LOADLAST";//loading the last statuses
 
     private String mTopic;
     private Toolbar mToolBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView mRecyclView;
-    private StatusRVAdapter mStatusRVAdapter;
+    private ListView mListView;
+    private StatusAdapter mStatusAdapter;
     private LinearLayoutManager mLayoutManager;
     private int mCount = 20;
     private int mPage = 1;
@@ -79,15 +82,18 @@ public class WeiBoTopicActivity extends AppCompatActivity implements Callback, S
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setRefreshing(true);
-        mRecyclView = (RecyclerView) findViewById(R.id.lv_f_statuses);
+        mListView = (ListView) findViewById(R.id.lv_f_statuses);
         mLayoutManager = new LinearLayoutManager(this);
-        mRecyclView.setLayoutManager(mLayoutManager);
-        mStatusRVAdapter = new StatusRVAdapter(mStatuses, this);
-        mRecyclView.setAdapter(mStatusRVAdapter);
-        mRecyclView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mStatusAdapter = new StatusAdapter(mStatuses, this,this);
+        mListView.setAdapter(mStatusAdapter);
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 int lastvisiblePos = mLayoutManager.findLastVisibleItemPosition();
                 lastvisiblePos++;
                 if (lastvisiblePos == mStatuses.size()) {
@@ -127,7 +133,7 @@ public class WeiBoTopicActivity extends AppCompatActivity implements Callback, S
     @Override
     public void onFailure(Request request, IOException e) {
         mHandler.post(new Runnable() {
-                @Override
+            @Override
             public void run() {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
@@ -154,7 +160,7 @@ public class WeiBoTopicActivity extends AppCompatActivity implements Callback, S
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mStatusRVAdapter.setMStatuses(mStatuses);
+                        mStatusAdapter.setmStatuses(mStatuses);
                     }
                 });
             }
@@ -166,7 +172,7 @@ public class WeiBoTopicActivity extends AppCompatActivity implements Callback, S
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mStatusRVAdapter.setMStatuses(mStatuses);
+                        mStatusAdapter.setmStatuses(mStatuses);
                     }
                 });
             }
@@ -176,10 +182,7 @@ public class WeiBoTopicActivity extends AppCompatActivity implements Callback, S
 
     @Override
     public void onMainClick(Status status) {
-        Intent intent = new Intent(this, WeiBoDetailActivity.class);
-        intent.putExtra("status", status);
-        startActivity(intent);
-        System.out.println(status.getText());
+
     }
 
     @Override

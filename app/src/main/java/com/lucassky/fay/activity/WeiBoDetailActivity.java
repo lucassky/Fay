@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.lucassky.fay.R;
 import com.lucassky.fay.adapter.StatusAdapter;
+import com.lucassky.fay.adapter.StatusDetailAdapter;
 import com.lucassky.fay.adapter.StatusGridViewAdapter;
 import com.lucassky.fay.adapter.StatusRVAdapter;
 import com.lucassky.fay.model.Comments;
@@ -41,7 +42,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/9/9.
  */
-public class WeiBoDetailActivity extends AppCompatActivity implements Callback {
+public class WeiBoDetailActivity extends AppCompatActivity implements Callback ,StatusDetailAdapter.OnAdapterOnClick{
     private Toolbar mToolBar;
     private TextView mTVStatusContent;
     private ExpandGridView mEGStatusMain;
@@ -54,7 +55,7 @@ public class WeiBoDetailActivity extends AppCompatActivity implements Callback {
     private RelativeLayout mHeaderView;
     private ListView mListView;
     private LinearLayoutManager mLayoutManager;
-    private StatusAdapter mStatusRVAdapter;
+    private StatusDetailAdapter mStatusRVAdapter;
 
     private LinearLayout mReportCommentView;
     private Status mStatus;
@@ -172,7 +173,7 @@ public class WeiBoDetailActivity extends AppCompatActivity implements Callback {
 //
 //            }
 //        });
-        mStatusRVAdapter = new StatusAdapter(mStatuse,this);
+        mStatusRVAdapter = new StatusDetailAdapter(mStatuse,this,this);
         mListView.setAdapter(mStatusRVAdapter);
         mListView.addHeaderView(mHeaderView);
     }
@@ -201,5 +202,15 @@ public class WeiBoDetailActivity extends AppCompatActivity implements Callback {
                 });
             }
         }
+    }
+
+    @Override
+    public void onUserPicClick(Status status) {
+
+    }
+
+    @Override
+    public void onStatusPicClick(ArrayList<ThumbnailPic> thumbnailPics, int pos) {
+
     }
 }

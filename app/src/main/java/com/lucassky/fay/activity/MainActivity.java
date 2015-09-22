@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
         return super.onOptionsItemSelected(item);
     }
 
-//    HttpManager.getStattuesFriends(getActivity(),0L, 0L, 10, 1, 0, 0, 0);
+//       HttpManager.getStattuesFriends(getActivity(),0L, 0L, 10, 1, 0, 0, 0);
 
     @Override
     public void onFailure(Request request, IOException e) {
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
     @Override
     public void onResponse(Response response) throws IOException {
         String tag = (String) response.request().tag();
-        if (UrlUitl.USER_SHOW.equals(tag)) {//获取到了用户信息
+            if (UrlUitl.USER_SHOW.equals(tag)) {//获取到了用户信息
             try {
                 String strRes = response.body().string();
                 Gson gson = new Gson();

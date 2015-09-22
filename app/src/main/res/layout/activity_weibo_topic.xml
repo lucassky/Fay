@@ -14,7 +14,7 @@
         android:layout_below="@+id/mytoolbar"
         android:background="@color/status_bg">
 
-        <android.support.v7.widget.RecyclerView
+        <ListView
             android:id="@+id/lv_f_statuses"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
