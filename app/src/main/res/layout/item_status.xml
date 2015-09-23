@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:orientation="vertical"
-        android:padding="3dp">
+        android:padding="4dp">
 
         <RelativeLayout
             android:layout_width="match_parent"

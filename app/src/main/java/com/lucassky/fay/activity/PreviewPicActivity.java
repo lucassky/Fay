@@ -26,15 +26,15 @@ public class PreviewPicActivity extends AppCompatActivity implements ViewPager.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_preview_pic);
-        mViewPager = (ViewPager) findViewById(R.id.ac_preview_pic_vp);
-        Intent intent = getIntent();
-        mThumbnailPics = intent.getParcelableArrayListExtra("thumbnailPics");
-        mCount = mThumbnailPics.size();
-        mPos = intent.getIntExtra("pos", 0);
-        initView();
-        System.out.println(mThumbnailPics.size());
-    }
+    setContentView(R.layout.activity_preview_pic);
+    mViewPager = (ViewPager) findViewById(R.id.ac_preview_pic_vp);
+    Intent intent = getIntent();
+    mThumbnailPics = intent.getParcelableArrayListExtra("thumbnailPics");
+    mCount = mThumbnailPics.size();
+    mPos = intent.getIntExtra("pos", 0);
+    initView();
+    System.out.println(mThumbnailPics.size());
+}
 
     private void initView() {
         PreviewPicVPAdapter mAdapter = new PreviewPicVPAdapter(this, mThumbnailPics);

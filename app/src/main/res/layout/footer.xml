@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="48dp">
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:orientation="horizontal">
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="loading more..."
-        android:gravity="center"/>
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:text="loading more..."/>
+
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/address_looking_up"
+        style="?android:attr/progressBarStyleSmallInverse"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:visibility="gone"/>
 
 </LinearLayout>

@@ -8,39 +8,11 @@
     <include layout="@layout/toolbar"/>
 
     <!--    <include layout="@layout/status_detail"/>-->
-
-    <FrameLayout
+    <ListView
+        android:id="@+id/lv_f_statuses"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ListView
-            android:id="@+id/ac_weibo_detail_lv_reports"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <LinearLayout
-            android:id="@+id/report_commtent"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@color/Indigo_nav_color"
-            android:visibility="gone"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="评论"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="1dp"
-                android:gravity="center"
-                android:text="转发"/>
-
-        </LinearLayout>
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:background="@color/status_bg"
+        android:divider="@color/status_bg"
+        android:dividerHeight="5dp"/>
 </LinearLayout>

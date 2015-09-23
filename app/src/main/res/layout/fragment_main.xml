@@ -12,8 +12,7 @@
         android:layout_height="match_parent"
         android:background="@color/status_bg"
         android:divider="@color/status_bg"
-        android:dividerHeight="5dp"
-        android:padding="5dp"/>
+        android:dividerHeight="5dp"/>
 
     <!--    <android.support.v7.widget.RecyclerView
             android:id="@+id/lv_f_statuses"

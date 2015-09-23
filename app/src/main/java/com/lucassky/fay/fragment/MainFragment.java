@@ -129,10 +129,11 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if ((visibleItemCount + firstVisibleItem) == mStatuses.size()) {
+                if ((visibleItemCount + firstVisibleItem) == mStatuses.size() && mStatuses.size()>19) {
                     if (!isLoadingMore) {
                         System.out.println("需要加载更多了");
                         isLoadingMore = true;
+                        mLVFStatuses.addFooterView(mFooter);
                         HttpManager.getStattuesFriends(getActivity(), LOADMORE, 0L, 0L, 20, pageIndex, 0, 0, 0, MainFragment.this);
                     }
                 }
@@ -186,9 +187,15 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
         mHandler.post(new Runnable() {
             @Override
             public void run() {
+                if(isLoadingMore){
+                    if(mLVFStatuses.getFooterViewsCount()>0)
+                        mLVFStatuses.removeFooterView(mFooter);
+                    isLoadingMore = false;
+                }
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+
     }
 
     private List<Status> mStatuse = new ArrayList<Status>();
@@ -199,6 +206,8 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
             @Override
             public void run() {
                 mSwipeRefreshLayout.setRefreshing(false);
+                if(mLVFStatuses.getFooterViewsCount()>0)
+                    mLVFStatuses.removeFooterView(mFooter);
             }
         });
         String str = response.body().string();
