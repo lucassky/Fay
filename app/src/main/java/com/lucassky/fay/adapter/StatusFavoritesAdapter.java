@@ -8,13 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lucassky.fay.R;
+import com.lucassky.fay.model.base.Favorite;
 import com.lucassky.fay.model.base.Status;
 import com.lucassky.fay.model.base.ThumbnailPic;
 import com.lucassky.fay.utils.StringUtil;
@@ -29,35 +27,35 @@ import java.util.List;
 /**
  * Created by 朋 on 2015/8/29.
  */
-public class StatusAdapter extends BaseAdapter {
-    private List<Status> mStatuses;
+public class StatusFavoritesAdapter extends BaseAdapter {
+    private List<Favorite> mFavorites;
     private LayoutInflater mInflayter;
     private Context mContext;
     private OnAdapterOnClick mOnAdapterOnClick;
 
-    public StatusAdapter(List<Status> mStatuses, Context context, OnAdapterOnClick onAdapterOnClick) {
-        this.mStatuses = mStatuses;
+    public StatusFavoritesAdapter(List<Favorite> mFavorites, Context context, OnAdapterOnClick onAdapterOnClick) {
+        this.mFavorites = mFavorites;
         mInflayter = LayoutInflater.from(context);
         mContext = context;
         this.mOnAdapterOnClick = onAdapterOnClick;
     }
 
-    public void setmStatuses(List<Status> statuses) {
-        if (mStatuses == null)
-            mStatuses = new ArrayList<Status>();
-        mStatuses.clear();
-        mStatuses.addAll(statuses);
+    public void setmFavorites(List<Favorite> favorites) {
+        if (mFavorites == null)
+            mFavorites = new ArrayList<Favorite>();
+        mFavorites.clear();
+        mFavorites.addAll(favorites);
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return mStatuses.size();
+        return mFavorites.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mStatuses.get(position);
+        return mFavorites.get(position);
     }
 
     @Override
@@ -87,13 +85,13 @@ public class StatusAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        final Status status = mStatuses.get(position);
+        final Status status = mFavorites.get(position).getStatus();
         final Status statusIn = status.getRetweeted_status();
 
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnAdapterOnClick.onMainClick(mStatuses.get(position));
+                mOnAdapterOnClick.onMainClick(status);
             }
         });
 
@@ -140,7 +138,10 @@ public class StatusAdapter extends BaseAdapter {
 
 
         if (statusIn != null) {
-            TextUitl.addURLSpan(mContext, "@" + statusIn.getUser().getName() + ":" + statusIn.getText(), viewHolder.status2TvContent);
+            String str = "";
+            if(statusIn.getUser() != null && statusIn.getUser().getName() != null)
+                str = "@" + statusIn.getUser().getName() + ":";
+            TextUitl.addURLSpan(mContext, str + statusIn.getText(), viewHolder.status2TvContent);
             viewHolder.status2TvContent.setMovementMethod(LinkMovementMethod.getInstance());
 
             viewHolder.status2TvContent.setVisibility(View.VISIBLE);

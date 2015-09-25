@@ -1,8 +1,12 @@
 package com.lucassky.fay.activity;
 
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,8 +16,12 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
 import com.lucassky.fay.R;
 import com.lucassky.fay.adapter.StatusAdapter;
+import com.lucassky.fay.adapter.StatusFavoritesAdapter;
+import com.lucassky.fay.model.FavoritesResult;
+import com.lucassky.fay.model.base.Favorite;
 import com.lucassky.fay.model.base.Status;
 import com.lucassky.fay.model.base.ThumbnailPic;
 import com.lucassky.fay.utils.newwork.HttpManager;
@@ -25,28 +33,48 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoritesActivity extends AppCompatActivity implements Callback, SwipeRefreshLayout.OnRefreshListener,AdapterView.OnItemClickListener,StatusAdapter.OnAdapterOnClick{
-    private final String LOADMORE = "LOADMORE";//loading more tag
+public class FavoritesActivity extends AppCompatActivity implements Callback, SwipeRefreshLayout.OnRefreshListener,AdapterView.OnItemClickListener,StatusFavoritesAdapter.OnAdapterOnClick{
+    private Toolbar mToolBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView mLVFStatuses;//关注好友的最新微博
-    private List<Status> mStatuses = new ArrayList<Status>();
-    private StatusAdapter mStatusAdapter;
+    private List<Favorite> mFavorites = new ArrayList<Favorite>();
+    private StatusFavoritesAdapter mStatusFavoritesAdapter;
     private LinearLayout mFooter;
     private boolean isLoadingMore = false;
     private int pageIndex = 1;
+    private List<Favorite> mFavoritesForAdd = new ArrayList<Favorite>();
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
+        HttpManager.getFavorites(this, HttpManager.LOADLAST, 20, pageIndex,this);
 
+
+        mToolBar = (Toolbar) findViewById(R.id.mytoolbar);
+        mToolBar.setTitle("我的收藏");
+        setSupportActionBar(mToolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         mFooter = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.footer, null);
         mLVFStatuses = (ListView) findViewById(R.id.lv_f_statuses);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setRefreshing(true);
-        mStatusAdapter = new StatusAdapter(mStatuses, this,this);
-        mLVFStatuses.setAdapter(mStatusAdapter);
+        mStatusFavoritesAdapter = new StatusFavoritesAdapter(mFavorites,this,this);
+        mLVFStatuses.setAdapter(mStatusFavoritesAdapter);
         mLVFStatuses.setOnItemClickListener(this);
         mLVFStatuses.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -56,12 +84,12 @@ public class FavoritesActivity extends AppCompatActivity implements Callback, Sw
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if ((visibleItemCount + firstVisibleItem) == mStatuses.size() && mStatuses.size() > 19) {
+                if ((visibleItemCount + firstVisibleItem) == mFavorites.size() && mFavorites.size() > 19) {
                 if (!isLoadingMore) {
                     System.out.println("需要加载更多了");
                     isLoadingMore = true;
                     mLVFStatuses.addFooterView(mFooter);
-                    HttpManager.getStattuesFriends(FavoritesActivity.this, LOADMORE, 0L, 0L, 20, pageIndex, 0, 0, 0, FavoritesActivity.this);
+                    HttpManager.getFavorites(FavoritesActivity.this, HttpManager.LOADMORE, 20, pageIndex, FavoritesActivity.this);
                 }
             }
         }
@@ -92,7 +120,10 @@ public class FavoritesActivity extends AppCompatActivity implements Callback, Sw
 
     @Override
     public void onMainClick(Status status) {
-
+        Intent intent = new Intent(this, WeiBoDetailActivity.class);
+        intent.putExtra("status", status);
+        startActivity(intent);
+        System.out.println(status.getText());
     }
 
     @Override
@@ -102,22 +133,77 @@ public class FavoritesActivity extends AppCompatActivity implements Callback, Sw
 
     @Override
     public void onStatusPicClick(ArrayList<ThumbnailPic> thumbnailPics, int pos) {
-
+        Intent intent = new Intent(this, PreviewPicActivity.class);
+        intent.putParcelableArrayListExtra("thumbnailPics", thumbnailPics);
+        intent.putExtra("pos", pos);
+        startActivity(intent);
     }
 
     @Override
     public void onRefresh() {
-
+        if (mFavorites.size() > 0) {
+            isLoadingMore = true;
+            HttpManager.getFavorites(this, HttpManager.LOADLAST, 20, 1,this);
+        } else {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
     public void onFailure(Request request, IOException e) {
-
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if(isLoadingMore){
+                    if(mLVFStatuses.getFooterViewsCount()>0)
+                        mLVFStatuses.removeFooterView(mFooter);
+                    isLoadingMore = false;
+                }
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
     public void onResponse(Response response) throws IOException {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+                if(mLVFStatuses.getFooterViewsCount()>0)
+                    mLVFStatuses.removeFooterView(mFooter);
+            }
+        });
+        String str = response.body().string();
+        Gson gson = new Gson();
+        final FavoritesResult favoritesResult = gson.fromJson(str, FavoritesResult.class);
+        final List<Favorite> favorites = favoritesResult.getFavorites();
 
+        if (HttpManager.LOADLAST.equals(response.request().tag())) {//loading last statuses
+            if (favorites != null && favorites.size() > 0) {
+                mFavoritesForAdd.addAll(0, favorites);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mStatusFavoritesAdapter.setmFavorites(mFavoritesForAdd);
+                        mStatusFavoritesAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        } else {
+            if (favorites != null && favorites.size() > 0) {
+                pageIndex++;
+                isLoadingMore = false;
+                mFavoritesForAdd.addAll(favorites);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mStatusFavoritesAdapter.setmFavorites(mFavoritesForAdd);
+                        mStatusFavoritesAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }
     }
 
     @Override

@@ -14,6 +14,16 @@ import com.squareup.okhttp.Request;
  */
 public class HttpManager {
     /**
+     * loading more tag
+     */
+    public static final String LOADMORE = "LOADMORE";
+
+    /**
+     * loading the last statuses
+     */
+    public static final String LOADLAST = "LOADLAST";
+
+    /**
      * HTTP 参数
      */
     protected static final String KEY_ACCESS_TOKEN = "access_token";

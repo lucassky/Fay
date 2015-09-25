@@ -78,14 +78,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/drawer_rl_header"
-            android:layout_marginLeft="15dp"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/drawer_tv_store"
+                android:id="@+id/drawer_tv_favorites"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:text="收藏"
+                android:background="?attr/selectableItemBackground"
+                android:paddingLeft="8dp"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"/>
 

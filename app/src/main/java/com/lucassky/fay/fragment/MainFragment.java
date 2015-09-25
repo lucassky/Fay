@@ -51,9 +51,6 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private final String LOADMORE = "LOADMORE";//loading more tag
-    private final String LOADLAST = "LOADLAST";//loading the last statuses
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -111,7 +108,7 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        HttpManager.getStattuesFriends(getActivity(), LOADLAST, 0L, 0L, 20, pageIndex, 0, 0, 0, this);
+        HttpManager.getStattuesFriends(getActivity(), HttpManager.LOADLAST, 0L, 0L, 20, pageIndex, 0, 0, 0, this);
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mFooter = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.footer, null);
         mLVFStatuses = (ListView) view.findViewById(R.id.lv_f_statuses);
@@ -134,7 +131,7 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
                         System.out.println("需要加载更多了");
                         isLoadingMore = true;
                         mLVFStatuses.addFooterView(mFooter);
-                        HttpManager.getStattuesFriends(getActivity(), LOADMORE, 0L, 0L, 20, pageIndex, 0, 0, 0, MainFragment.this);
+                        HttpManager.getStattuesFriends(getActivity(), HttpManager.LOADMORE, 0L, 0L, 20, pageIndex, 0, 0, 0, MainFragment.this);
                     }
                 }
             }
@@ -215,7 +212,7 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
         final StatusesResult statuses = gson.fromJson(str, StatusesResult.class);
         final List<Status> statuse = statuses.getStatuses();
 
-        if (LOADLAST.equals(response.request().tag())) {//loading last statuses
+        if (HttpManager.LOADLAST.equals(response.request().tag())) {//loading last statuses
             if (statuse != null && statuse.size() > 0) {
                 mStatuse.addAll(0, statuse);
                 mHandler.post(new Runnable() {
@@ -245,7 +242,7 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
     public void onRefresh() {
         if (mStatuse.size() > 0) {
             isLoadingMore = true;
-            HttpManager.getStattuesFriends(getActivity(), LOADLAST, mStatuse.get(0).getId(), 0L, 20, 1, 0, 0, 0, this);
+            HttpManager.getStattuesFriends(getActivity(), HttpManager.LOADLAST, mStatuse.get(0).getId(), 0L, 20, 1, 0, 0, 0, this);
         } else {
             mSwipeRefreshLayout.setRefreshing(false);
         }

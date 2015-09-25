@@ -1,5 +1,6 @@
 package com.lucassky.fay.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,7 +35,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity implements Callback {
+public class MainActivity extends AppCompatActivity implements Callback,View.OnClickListener {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements Callback {
     private RoundImageView mUserIcon;
     private TextView mUserScreenName;
     private TextView mUserDes;
+    private TextView mUserFavorites;
+
     private TextView mUserSettings;
     private Button mBTn;
     private FragmentTransaction mFragTransaction;
@@ -102,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements Callback {
                 System.out.println("mUserSettings.setOnClickListener");
             }
         });
+        mUserFavorites = (TextView) findViewById(R.id.drawer_tv_favorites);
+        mUserFavorites.setOnClickListener(this);
     }
 
     private void setmMainFragment() {
@@ -163,6 +168,15 @@ public class MainActivity extends AppCompatActivity implements Callback {
             } catch (JsonSyntaxException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.drawer_tv_favorites:
+                startActivity(new Intent(this,FavoritesActivity.class));
+                break;
         }
     }
 }
