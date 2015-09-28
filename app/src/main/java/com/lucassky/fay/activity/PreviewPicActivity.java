@@ -46,8 +46,8 @@ public class PreviewPicActivity extends AppCompatActivity implements ViewPager.O
         mPageInditer.setText(mPos + 1 + "/" + mCount);
     }
 
-           @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
     }
 

@@ -41,6 +41,10 @@ public class Status implements Parcelable{
     //pic_ids	object	微博配图ID。多图时返回多图ID，用来拼接图片url。用返回字段thumbnail_pic的地址配上该返回字段的图片ID，即可得到多个图片url。
     //ad	object array	微博流内的推广微博ID
 
+    private int isChecked = 0;// 评论是否选中，0:true；1:false
+
+    public Status() {}
+
     protected Status(Parcel in) {
         created_at = in.readString();
         id = in.readLong();
@@ -250,6 +254,14 @@ public class Status implements Parcelable{
 
     public void setMlevel(int mlevel) {
         this.mlevel = mlevel;
+    }
+
+    public int getIsChecked() {
+        return isChecked;
+    }
+
+    public void setIsChecked(int isChecked) {
+        this.isChecked = isChecked;
     }
 
     @Override

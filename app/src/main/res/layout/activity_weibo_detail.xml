@@ -18,29 +18,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <LinearLayout
+        <RadioGroup
             android:id="@+id/report_commtent"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@color/Indigo_nav_color"
-            android:visibility="gone"
             android:orientation="horizontal">
 
-            <TextView
+            <RadioButton
+                android:id="@+id/rc_rb_1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:background="@drawable/selector_reports_comments"
+                android:button="@null"
+                android:textColor="@android:color/black"
+                android:checked="true"
                 android:text="评论"/>
 
-            <TextView
+            <RadioButton
+                android:id="@+id/rc_rb_2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:gravity="center"
+                android:button="@null"
+                android:textColor="@android:color/black"
+                android:background="@drawable/selector_reports_comments"
                 android:text="转发"/>
 
-        </LinearLayout>
+        </RadioGroup>
     </FrameLayout>
 </LinearLayout>

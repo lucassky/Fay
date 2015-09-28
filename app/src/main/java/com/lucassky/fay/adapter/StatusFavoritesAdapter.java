@@ -106,7 +106,7 @@ public class StatusFavoritesAdapter extends BaseAdapter {
             viewHolder.setPos(position);
             viewHolder.userName.setText(status.getUser().getName());
         }
-        viewHolder.statusFromTime.setText(Html.fromHtml(status.getSource()) + " · " + StringUtil.formarTime(status.getCreated_at()));
+//        viewHolder.statusFromTime.setText(Html.fromHtml(status.getSource()) + " · " + StringUtil.formarTime(status.getCreated_at()));
         TextUitl.addURLSpan(mContext, status.getText(), viewHolder.statusTvContent);
         if (status.getReposts_count() == 0 && status.getComments_count() == 0) {
             viewHolder.statusTranAndCom.setVisibility(View.GONE);

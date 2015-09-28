@@ -6,25 +6,24 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lucassky.fay.R;
-import com.lucassky.fay.adapter.StatusAdapter;
 import com.lucassky.fay.adapter.StatusDetailAdapter;
 import com.lucassky.fay.adapter.StatusGridViewAdapter;
-import com.lucassky.fay.adapter.StatusRVAdapter;
 import com.lucassky.fay.model.Comments;
-import com.lucassky.fay.model.StatusesResult;
 import com.lucassky.fay.model.base.Status;
 import com.lucassky.fay.model.base.ThumbnailPic;
 import com.lucassky.fay.utils.TextUitl;
@@ -42,7 +41,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/9/9.
  */
-public class WeiBoDetailActivity extends AppCompatActivity implements Callback ,StatusDetailAdapter.OnAdapterOnClick{
+public class WeiBoDetailActivity extends AppCompatActivity implements Callback, StatusDetailAdapter.OnAdapterOnClick, RadioGroup.OnCheckedChangeListener {
     private Toolbar mToolBar;
     private TextView mTVStatusContent;
     private ExpandGridView mEGStatusMain;
@@ -54,11 +53,20 @@ public class WeiBoDetailActivity extends AppCompatActivity implements Callback ,
 
     private RelativeLayout mHeaderView;
     private ListView mListView;
-    private LinearLayoutManager mLayoutManager;
     private StatusDetailAdapter mStatusRVAdapter;
 
-    private LinearLayout mReportCommentView;
+    private RadioGroup mReportCommentView;
+    private RadioButton mReportsCheck;
+    private RadioButton mCommentsCheck;
     private Status mStatus;
+
+    private int mPageIndexForReports = 1;
+    private int mPageIndexForComments = 1;
+
+
+    List<Status> mStatusesForReports = new ArrayList<Status>();// Reports
+    List<Status> mStatuesForComments = new ArrayList<Status>();// Comments
+
     private static Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -75,11 +83,11 @@ public class WeiBoDetailActivity extends AppCompatActivity implements Callback ,
         Intent intent = getIntent();
         mStatus = intent.getParcelableExtra("status");
         initView();
-        HttpManager.getStatusCommtentsByID(this, UrlUitl.WEIBO_REPORTS, mStatus.getId(), 0, 0, 20, 1, 0, this);
+        HttpManager.getStatusCommtentsByID(this, UrlUitl.WEIBO_COMMENTS, mStatus.getId(), 0, 0, 20, mPageIndexForComments, 0, this);
     }
 
     private void initView() {
-               mToolBar = (Toolbar) findViewById(R.id.mytoolbar);
+        mToolBar = (Toolbar) findViewById(R.id.mytoolbar);
         mToolBar.setTitle("微博详情");
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -90,17 +98,22 @@ public class WeiBoDetailActivity extends AppCompatActivity implements Callback ,
             }
         });
 
-        mHeaderView = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.status_detail,mListView,false);
-        mReportCommentView = (LinearLayout) findViewById(R.id.report_commtent);
+        mHeaderView = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.status_detail, mListView, false);
+        mReportCommentView = (RadioGroup) findViewById(R.id.report_commtent);
+        mReportCommentView.setOnCheckedChangeListener(this);
 
+        mCommentsCheck = (RadioButton) findViewById(R.id.rc_rb_1);
+        mReportsCheck = (RadioButton) findViewById(R.id.rc_rb_2);
+//        mReportsCheck.setOnCheckedChangeListener(this);
+//        mCommentsCheck.setOnCheckedChangeListener(this);
 
-        mTVStatusContent = (TextView)mHeaderView.findViewById(R.id.status_detail_tv_content);
-        mEGStatusMain = (ExpandGridView)mHeaderView.findViewById(R.id.status_detail_gd);
+        mTVStatusContent = (TextView) mHeaderView.findViewById(R.id.status_detail_tv_content);
+        mEGStatusMain = (ExpandGridView) mHeaderView.findViewById(R.id.status_detail_gd);
 
-        mLLStatusIn = (LinearLayout)mHeaderView.findViewById(R.id.status2_detail_rl);
-        mTVStatusInContent = (TextView)mHeaderView.findViewById(R.id.status2_detail_tv_content);
-        mEGStatusIn = (ExpandGridView)mHeaderView.findViewById(R.id.status2_detail_gd);
-        mTVStatusInReportComment = (TextView)mHeaderView.findViewById(R.id.status2_detail_transmit_comment);
+        mLLStatusIn = (LinearLayout) mHeaderView.findViewById(R.id.status2_detail_rl);
+        mTVStatusInContent = (TextView) mHeaderView.findViewById(R.id.status2_detail_tv_content);
+        mEGStatusIn = (ExpandGridView) mHeaderView.findViewById(R.id.status2_detail_gd);
+        mTVStatusInReportComment = (TextView) mHeaderView.findViewById(R.id.status2_detail_transmit_comment);
 
 
         mTVStatusContent.setText(mStatus.getText());
@@ -114,7 +127,10 @@ public class WeiBoDetailActivity extends AppCompatActivity implements Callback ,
 
         if (mStatus.getRetweeted_status() != null) {
             mLLStatusIn.setVisibility(View.VISIBLE);
-            TextUitl.addURLSpan(this, "@" + mStatus.getRetweeted_status().getUser().getName() + ":" + mStatus.getRetweeted_status().getText(), mTVStatusInContent);
+            String str = "";
+            if (!TextUtils.isEmpty(mStatus.getRetweeted_status().getUser().getName()))
+                str = "@" + mStatus.getRetweeted_status().getUser().getName() + ":";
+            TextUitl.addURLSpan(this, str + mStatus.getRetweeted_status().getText(), mTVStatusInContent);
             mTVStatusInContent.setVisibility(View.VISIBLE);
             if (mStatus.getRetweeted_status().getPic_urls() != null && mStatus.getRetweeted_status().getPic_urls().size() > 0) {
                 StatusGridViewAdapter statusGridViewAdapter = new StatusGridViewAdapter(this);
@@ -137,6 +153,12 @@ public class WeiBoDetailActivity extends AppCompatActivity implements Callback ,
             }
         }
 
+        Status status = new Status();
+        status.setIsChecked(0);
+        mStatusesForReports.add(status);
+        mStatuesForComments.add(status);
+
+
         mListView = (ListView) findViewById(R.id.ac_weibo_detail_lv_reports);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -146,36 +168,18 @@ public class WeiBoDetailActivity extends AppCompatActivity implements Callback ,
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if(firstVisibleItem != 0){
-                    if(mReportCommentView.getVisibility() == View.GONE)
+                if (firstVisibleItem != 0) {
+                    if (mReportCommentView.getVisibility() == View.GONE)
                         mReportCommentView.setVisibility(View.VISIBLE);
-                }else{
-                    if(mReportCommentView.getVisibility() == View.VISIBLE)
-                         mReportCommentView.setVisibility(View.GONE);
+                } else {
+                    if (mReportCommentView.getVisibility() == View.VISIBLE)
+                        mReportCommentView.setVisibility(View.GONE);
                 }
             }
         });
-//        mLayoutManager = new LinearLayoutManager(this);
-//        mListView.setLayoutManager(mLayoutManager);
-//        mStatusRVAdapter = new StatusRVAdapter(mStatuse, new StatusRVAdapter.RVAdapterOnClick() {
-//            @Override
-//            public void onMainClick(Status status) {
-//
-//            }
-//
-//            @Override
-//            public void onUserPicClick(Status status) {
-//
-//            }
-//
-//            @Override
-//            public void onStatusPicClick(ArrayList<ThumbnailPic> thumbnailPics, int pos) {
-//
-//            }
-//        });
-        mStatusRVAdapter = new StatusDetailAdapter(mStatuse,this,this);
-        mListView.setAdapter(mStatusRVAdapter);
+        mStatusRVAdapter = new StatusDetailAdapter(new ArrayList<Status>(), this, this);
         mListView.addHeaderView(mHeaderView);
+        mListView.setAdapter(mStatusRVAdapter);
     }
 
     @Override
@@ -183,21 +187,37 @@ public class WeiBoDetailActivity extends AppCompatActivity implements Callback ,
 
     }
 
-    List<Status> mStatuse = new ArrayList<Status>();
 
     @Override
     public void onResponse(Response response) throws IOException {
-
         if (UrlUitl.WEIBO_REPORTS.equals(response.request().tag())) {
             String str = response.body().string();
             Gson gson = new Gson();
             final Comments statuses = gson.fromJson(str, Comments.class);
             if (statuses.getComments() != null && statuses.getComments().size() > 0) {
-                mStatuse = statuses.getComments();
+                mPageIndexForReports++;
+                mStatusesForReports.addAll(statuses.getComments());
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mStatusRVAdapter.setmStatuses(mStatuse);
+                        if (mReportsCheck.isChecked()) {
+                            mStatusRVAdapter.setmStatuses(mStatusesForReports);
+                        }
+                    }
+                });
+            }
+        } else {
+            String str = response.body().string();
+            Gson gson = new Gson();
+            final Comments statuses = gson.fromJson(str, Comments.class);
+            if (statuses.getComments() != null && statuses.getComments().size() > 0) {
+                mPageIndexForComments++;
+                mStatuesForComments.addAll(statuses.getComments());
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mCommentsCheck.isChecked())
+                            mStatusRVAdapter.setmStatuses(mStatuesForComments);
                     }
                 });
             }
@@ -213,4 +233,50 @@ public class WeiBoDetailActivity extends AppCompatActivity implements Callback ,
     public void onStatusPicClick(ArrayList<ThumbnailPic> thumbnailPics, int pos) {
 
     }
+
+    @Override
+    public void onReportOrCommentsChoosed(int index) {
+        if (index == 0) {
+            mCommentsCheck.setChecked(true);
+        } else {
+            mReportsCheck.setChecked(true);
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            case R.id.rc_rb_1:
+                mCommentsCheck.setChecked(true);
+                mStatuesForComments.get(0).setIsChecked(0);
+                mStatusesForReports.get(0).setIsChecked(1);
+                mStatusRVAdapter.setmStatuses(mStatuesForComments);
+                break;
+            case R.id.rc_rb_2:
+                mReportsCheck.setChecked(true);
+                mStatuesForComments.get(0).setIsChecked(1);
+                mStatusesForReports.get(0).setIsChecked(0);
+                mStatusRVAdapter.setmStatuses(mStatusesForReports);
+                HttpManager.getStatusReportsByID(this, UrlUitl.WEIBO_REPORTS, mStatus.getId(), 0, 0, 20, mPageIndexForReports, 0, this);
+                break;
+        }
+    }
+
+//    @Override
+//    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//        if (isChecked) {
+//            switch (buttonView.getId()) {
+//                case R.id.rc_rb_1:
+//
+//                    mReportsCheck.setChecked(true);
+//                    mStatusRVAdapter.setmStatuses(mStatusesForReports);
+//                    break;
+//                case R.id.rc_rb_2:
+//                    mCommentsCheck.setChecked(true);
+//                    mStatusRVAdapter.setmStatuses(mStatuesForComments);
+//                    HttpManager.getStatusCommtentsByID(this, UrlUitl.WEIBO_COMMENTS, mStatus.getId(), 0, 0, 20, mPageIndexForComments, 0, this);
+//                    break;
+//            }
+//        }
+//    }
 }

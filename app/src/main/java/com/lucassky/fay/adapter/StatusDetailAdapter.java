@@ -8,7 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.lucassky.fay.R;
@@ -31,6 +34,7 @@ public class StatusDetailAdapter extends BaseAdapter {
     private LayoutInflater mInflayter;
     private Context mContext;
     private OnAdapterOnClick mOnAdapterOnClick;
+
     public StatusDetailAdapter(List<Status> mStatuses, Context context, OnAdapterOnClick onAdapterOnClick) {
         this.mStatuses = mStatuses;
         mInflayter = LayoutInflater.from(context);
@@ -39,8 +43,8 @@ public class StatusDetailAdapter extends BaseAdapter {
     }
 
     public void setmStatuses(List<Status> statuses) {
-        if (mStatuses == null)
-            mStatuses = new ArrayList<Status>();
+//        if (mStatuses == null)
+        mStatuses = new ArrayList<Status>();
         mStatuses.clear();
         mStatuses.addAll(statuses);
         notifyDataSetChanged();
@@ -62,11 +66,38 @@ public class StatusDetailAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if(position == 0){
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        if (position == 0) {
 //            convertView = mInflayter.inflate(R.layout.item_status, null);
-            return mInflayter.inflate(R.layout.report_comment_view, null);
-        }else{
+
+            View view = mInflayter.inflate(R.layout.report_comment_view, null);
+            RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.report_commtent);
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    switch (checkedId) {
+                        case R.id.rc_rb_1:
+                            mOnAdapterOnClick.onReportOrCommentsChoosed(0);
+                            mStatuses.get(position).setIsChecked(0);
+                            break;
+                        case R.id.rc_rb_2:
+                            mOnAdapterOnClick.onReportOrCommentsChoosed(1);
+                            mStatuses.get(position).setIsChecked(1);
+                            break;
+                    }
+                }
+            });
+            RadioButton rCommtents = (RadioButton) view.findViewById(R.id.rc_rb_1);
+            RadioButton rReports = (RadioButton) view.findViewById(R.id.rc_rb_2);
+            if (mStatuses.get(position).getIsChecked() == 0) {
+                rCommtents.setChecked(true);
+                rReports.setChecked(false);
+            } else {
+                rCommtents.setChecked(false);
+                rReports.setChecked(true);
+            }
+            return view;
+        } else {
             ViewHolder viewHolder = null;
             if (convertView == null || convertView instanceof LinearLayout) {
                 viewHolder = new ViewHolder();
@@ -199,6 +230,9 @@ public class StatusDetailAdapter extends BaseAdapter {
 
     public interface OnAdapterOnClick {
         public void onUserPicClick(Status status);
+
         public void onStatusPicClick(ArrayList<ThumbnailPic> thumbnailPics, int pos);
+
+        public void onReportOrCommentsChoosed(int index);
     }
 }
