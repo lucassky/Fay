@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements Callback,View.OnC
     private TextView mUserFavorites;
 
     private TextView mUserSettings;
-    private Button mBTn;
     private FragmentTransaction mFragTransaction;
     private FragmentManager mFragManager;
 
@@ -93,13 +92,6 @@ public class MainActivity extends AppCompatActivity implements Callback,View.OnC
         mUserDes = (TextView) findViewById(R.id.user_des);
         mUserSettings = (TextView) findViewById(R.id.drawer_tv_settings);
         mUserSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("mUserSettings.setOnClickListener");
-            }
-        });
-        mBTn = (Button) findViewById(R.id.drawer_bth_settings);
-        mBTn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("mUserSettings.setOnClickListener");

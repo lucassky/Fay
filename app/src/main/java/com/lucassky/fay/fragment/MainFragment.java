@@ -17,6 +17,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -61,6 +62,8 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
 //    private LinearLayoutManager mLayoutManager;
     private List<Status> mStatuses = new ArrayList<Status>();
     private StatusAdapter mStatusAdapter;
+
+    private TextView mFooterTV;
 
     private LinearLayout mFooter;
 
@@ -111,12 +114,15 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
         HttpManager.getStattuesFriends(getActivity(), HttpManager.LOADLAST, 0L, 0L, 20, pageIndex, 0, 0, 0, this);
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mFooter = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.footer, null);
+        mFooterTV = (TextView) mFooter.findViewById(R.id.footer_tv);
         mLVFStatuses = (ListView) view.findViewById(R.id.lv_f_statuses);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setRefreshing(true);
         mStatusAdapter = new StatusAdapter(mStatuses, getActivity(),this);
+        mLVFStatuses.addFooterView(mFooter);
         mLVFStatuses.setAdapter(mStatusAdapter);
+
         mLVFStatuses.setOnItemClickListener(this);
         mLVFStatuses.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -130,8 +136,7 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
                     if (!isLoadingMore) {
                         System.out.println("需要加载更多了");
                         isLoadingMore = true;
-                        mLVFStatuses.addFooterView(mFooter);
-                        HttpManager.getStattuesFriends(getActivity(), HttpManager.LOADMORE, 0L, 0L, 20, pageIndex, 0, 0, 0, MainFragment.this);
+//                        HttpManager.getStattuesFriends(getActivity(), HttpManager.LOADMORE, 0L, 0L, 20, pageIndex, 0, 0, 0, MainFragment.this);
                     }
                 }
             }
@@ -185,8 +190,8 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
             @Override
             public void run() {
                 if(isLoadingMore){
-                    if(mLVFStatuses.getFooterViewsCount()>0)
-                        mLVFStatuses.removeFooterView(mFooter);
+//                    if(mLVFStatuses.getFooterViewsCount()>0)
+//                        mLVFStatuses.removeFooterView(mFooter);
                     isLoadingMore = false;
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -203,8 +208,6 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
             @Override
             public void run() {
                 mSwipeRefreshLayout.setRefreshing(false);
-                if(mLVFStatuses.getFooterViewsCount()>0)
-                    mLVFStatuses.removeFooterView(mFooter);
             }
         });
         String str = response.body().string();
@@ -230,6 +233,7 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
+                        mFooterTV.setText("点击加载更多");
                         mStatusAdapter.setmStatuses(mStatuse);
                     }
                 });
@@ -272,10 +276,14 @@ public class MainFragment extends Fragment implements Callback, SwipeRefreshLayo
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(getActivity(), WeiBoDetailActivity.class);
-        intent.putExtra("status", mStatuses.get(position));
-        startActivity(intent);
-        System.out.println(mStatuses.get(position).getText());
+        if(mStatuses.size()>position){
+            Intent intent = new Intent(getActivity(), WeiBoDetailActivity.class);
+            intent.putExtra("status", mStatuses.get(position));
+            startActivity(intent);
+        }else{
+            mFooterTV.setText("正在加载更多...");
+            HttpManager.getStattuesFriends(getActivity(), HttpManager.LOADMORE, 0L, 0L, 20, pageIndex, 0, 0, 0, MainFragment.this);
+        }
     }
 
     /**

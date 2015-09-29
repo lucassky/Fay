@@ -11,9 +11,9 @@
         <item name="android:windowNoTitle">true</item>
 
         <!-- Actionbar color -->
-        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimary">@color/status_bg</item>
         <!-- Status bar color -->
-        <item name="colorPrimaryDark">@color/red</item>
+        <item name="colorPrimaryDark">@color/status_bg</item>
         <!-- Window color -->
         <item name="android:windowBackground">@android:color/white</item>
 
