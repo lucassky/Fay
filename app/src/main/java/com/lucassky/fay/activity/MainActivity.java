@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements Callback,View.OnC
 
 
     private void initView() {
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.mytoolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.activity_my_toolbar);
         mToolbar.inflateMenu(R.menu.main);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

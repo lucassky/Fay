@@ -25,6 +25,7 @@ import com.lucassky.fay.model.base.Favorite;
 import com.lucassky.fay.model.base.Status;
 import com.lucassky.fay.model.base.ThumbnailPic;
 import com.lucassky.fay.utils.newwork.HttpManager;
+import com.sina.weibo.sdk.api.share.Base;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -33,8 +34,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoritesActivity extends AppCompatActivity implements Callback, SwipeRefreshLayout.OnRefreshListener,AdapterView.OnItemClickListener,StatusFavoritesAdapter.OnAdapterOnClick{
-    private Toolbar mToolBar;
+public class FavoritesActivity extends BaseActivity implements Callback, SwipeRefreshLayout.OnRefreshListener,AdapterView.OnItemClickListener,StatusFavoritesAdapter.OnAdapterOnClick{
+//    private Toolbar mToolBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView mLVFStatuses;//关注好友的最新微博
     private List<Favorite> mFavorites = new ArrayList<Favorite>();
@@ -54,15 +55,15 @@ public class FavoritesActivity extends AppCompatActivity implements Callback, Sw
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorites);
-        HttpManager.getFavorites(this, HttpManager.LOADLAST, 20, pageIndex,this);
+//        setContentView(R.layout.activity_favorites);
+        HttpManager.getFavorites(this, HttpManager.LOADLAST, 20, pageIndex, this);
 
-
-        mToolBar = (Toolbar) findViewById(R.id.mytoolbar);
-        mToolBar.setTitle("我的收藏");
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+//        mToolBar = (Toolbar) findViewById(R.id.activity_my_toolbar);
+//        getmToolbar().setTitle("我的收藏");
+//        setSupportActionBar(mToolBar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setToolBarTitle("我的收藏");
+        getmToolbar().setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -94,6 +95,11 @@ public class FavoritesActivity extends AppCompatActivity implements Callback, Sw
             }
         }
         });
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_favorites;
     }
 
     @Override

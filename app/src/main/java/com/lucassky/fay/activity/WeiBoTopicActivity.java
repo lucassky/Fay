@@ -68,7 +68,7 @@ public class WeiBoTopicActivity extends AppCompatActivity implements Callback, S
     }
 
     private void initView() {
-        mToolBar = (Toolbar) findViewById(R.id.mytoolbar);
+        mToolBar = (Toolbar) findViewById(R.id.activity_my_toolbar);
         mToolBar.setTitle(mTopic);
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

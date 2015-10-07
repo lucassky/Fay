@@ -20,7 +20,7 @@ public class WeiBoUrlDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weibo_url_detail);
 
-        mToolBar = (Toolbar) findViewById(R.id.mytoolbar);
+        mToolBar = (Toolbar) findViewById(R.id.activity_my_toolbar);
         mToolBar.setTitle("连接详情");
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -15,7 +15,7 @@
         <!-- Status bar color -->
         <item name="colorPrimaryDark">@color/status_bg</item>
         <!-- Window color -->
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@android:color/black</item>
 
         <item name="android:textColorPrimary">@color/text_color_primary</item>
         <item name="android:textColorSecondary">@color/text_second_color_primary</item>

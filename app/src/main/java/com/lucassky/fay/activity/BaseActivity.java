@@ -26,15 +26,15 @@ import com.lucassky.fay.R;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
+    public Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
-        toolbar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar, null);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.activity_my_toolbar);
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
@@ -42,6 +42,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getLayoutResource();
 
     protected void setActionBarIcon(int iconRes) {
-        toolbar.setNavigationIcon(iconRes);
+        mToolbar.setNavigationIcon(iconRes);
+    }
+
+    protected void setToolBarTitle(String title){
+        mToolbar.setTitle(title);
+    }
+    protected void setToolBarTitle(int strId){
+        mToolbar.setTitle(strId);
+    }
+
+    public Toolbar getmToolbar() {
+        return mToolbar;
     }
 }

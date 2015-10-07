@@ -87,7 +87,7 @@ public class WeiBoDetailActivity extends AppCompatActivity implements Callback, 
     }
 
     private void initView() {
-        mToolBar = (Toolbar) findViewById(R.id.mytoolbar);
+        mToolBar = (Toolbar) findViewById(R.id.activity_my_toolbar);
         mToolBar.setTitle("微博详情");
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
