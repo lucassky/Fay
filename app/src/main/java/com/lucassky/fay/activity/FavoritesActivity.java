@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,14 +16,13 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.lucassky.fay.R;
-import com.lucassky.fay.adapter.StatusAdapter;
+import com.lucassky.fay.activity.base.BaseActivity;
 import com.lucassky.fay.adapter.StatusFavoritesAdapter;
 import com.lucassky.fay.model.FavoritesResult;
 import com.lucassky.fay.model.base.Favorite;
 import com.lucassky.fay.model.base.Status;
 import com.lucassky.fay.model.base.ThumbnailPic;
 import com.lucassky.fay.utils.newwork.HttpManager;
-import com.sina.weibo.sdk.api.share.Base;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -63,12 +60,6 @@ public class FavoritesActivity extends BaseActivity implements Callback, SwipeRe
 //        setSupportActionBar(mToolBar);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setToolBarTitle("我的收藏");
-        getmToolbar().setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
         mFooter = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.footer, null);
         mLVFStatuses = (ListView) findViewById(R.id.lv_f_statuses);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);

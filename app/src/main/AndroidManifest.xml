@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lucassky.fay" >
+    package="com.lucassky.fay">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -11,7 +11,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name" />
@@ -22,7 +22,7 @@
         <activity
             android:name=".activity.WelcomActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,17 +38,17 @@
         <activity
             android:name=".activity.WeiBoUrlDetailActivity"
             android:label="@string/title_activity_wei_bo_url_detail"
-            android:launchMode="singleTop" >
-        </activity>
+            android:launchMode="singleTop" />
         <activity
             android:name=".activity.WeiBoTopicActivity"
             android:label="@string/title_activity_wei_bo_topic"
-            android:launchMode="singleTop" >
-        </activity>
+            android:launchMode="singleTop" />
         <activity
             android:name=".activity.FavoritesActivity"
-            android:label="@string/title_activity_favorites" >
-        </activity>
+            android:label="@string/title_activity_favorites" />
+        <activity
+            android:name=".activity.FriendshipsActivity"
+            android:label="@string/title_activity_friendships" />
     </application>
 
 </manifest>

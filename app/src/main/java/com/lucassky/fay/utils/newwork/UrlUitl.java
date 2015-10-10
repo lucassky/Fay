@@ -19,6 +19,8 @@ public class UrlUitl {
     public static String SEARCH_TOPICS = "SEARCH_TOPICS";
     //获取当前用户的收藏列表
     public static String FAVORITES= "FAVORITES";
+    //获取用户关注的列表
+    public static String FRIENDSHIPS = "FRIENDSHIPS";
 
     public static String getRequestUrl(String key) {
         String urlSuffix = "";
@@ -36,6 +38,9 @@ public class UrlUitl {
             urlSuffix = "search/topics.json";
         }else if (FAVORITES.equals(key)) {
             urlSuffix = "favorites.json";
+        }else if(FRIENDSHIPS.equals(key)){
+            urlSuffix = "friendships/friends.json";
+
         }
         return ROOT + urlSuffix;
     }

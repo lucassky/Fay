@@ -84,7 +84,7 @@ public class WeiBoTopicActivity extends AppCompatActivity implements Callback, S
         mSwipeRefreshLayout.setRefreshing(true);
         mListView = (ListView) findViewById(R.id.lv_f_statuses);
         mLayoutManager = new LinearLayoutManager(this);
-        mStatusAdapter = new StatusAdapter(mStatuses, this,this);
+        mStatusAdapter = new StatusAdapter(mStatuses, this, this);
         mListView.setAdapter(mStatusAdapter);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override

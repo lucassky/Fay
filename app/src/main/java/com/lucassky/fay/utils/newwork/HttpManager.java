@@ -52,10 +52,7 @@ public class HttpManager {
         params.put("feature", featureType);
 
         String str = params.encodeUrl();
-        Request request = new Request.Builder()
-                .tag(tag)
-                .url(UrlUitl.getRequestUrl(UrlUitl.STATUSES_FRIENDS_TIMELINE) + "?" + str)
-                .build();
+        Request request = new Request.Builder().tag(tag).url(UrlUitl.getRequestUrl(UrlUitl.STATUSES_FRIENDS_TIMELINE) + "?" + str).build();
         HttpUtil.enqueue(request, callback);
     }
 
@@ -69,10 +66,7 @@ public class HttpManager {
         params.put(KEY_ACCESS_TOKEN, AccessTokenKeeper.readAccessToken(context).getToken());
         params.put("uid", uid);
         String str = params.encodeUrl();
-        Request request = new Request.Builder()
-                .tag(tag)
-                .url(UrlUitl.getRequestUrl(UrlUitl.USER_SHOW) + "?" + str)
-                .build();
+        Request request = new Request.Builder().tag(tag).url(UrlUitl.getRequestUrl(UrlUitl.USER_SHOW) + "?" + str).build();
         HttpUtil.enqueue(request, callback);
     }
 
@@ -99,10 +93,7 @@ public class HttpManager {
         params.put("page", page);
         params.put("filter_by_author", filter_by_author);
         String str = params.encodeUrl();
-        Request request = new Request.Builder()
-                .tag(tag)
-                .url(UrlUitl.getRequestUrl(UrlUitl.WEIBO_COMMENTS) + "?" + str)
-                .build();
+        Request request = new Request.Builder().tag(tag).url(UrlUitl.getRequestUrl(UrlUitl.WEIBO_COMMENTS) + "?" + str).build();
         HttpUtil.enqueue(request, callback);
     }
 
@@ -119,10 +110,7 @@ public class HttpManager {
         params.put(KEY_ACCESS_TOKEN, AccessTokenKeeper.readAccessToken(context).getToken());
         params.put("ids", ids);
         String str = params.encodeUrl();
-        Request request = new Request.Builder()
-                .tag(tag)
-                .url(UrlUitl.getRequestUrl(UrlUitl.WEIBO_REPOSTS_COMMENTS_COUNT) + "?" + str)
-                .build();
+        Request request = new Request.Builder().tag(tag).url(UrlUitl.getRequestUrl(UrlUitl.WEIBO_REPOSTS_COMMENTS_COUNT) + "?" + str).build();
         HttpUtil.enqueue(request, callback);
     }
 
@@ -149,10 +137,7 @@ public class HttpManager {
         params.put("page", page);
         params.put("filter_by_author", filter_by_author);
         String str = params.encodeUrl();
-        Request request = new Request.Builder()
-                .tag(tag)
-                .url(UrlUitl.getRequestUrl(UrlUitl.WEIBO_REPORTS) + "?" + str)
-                .build();
+        Request request = new Request.Builder().tag(tag).url(UrlUitl.getRequestUrl(UrlUitl.WEIBO_REPORTS) + "?" + str).build();
         HttpUtil.enqueue(request, callback);
     }
 
@@ -174,10 +159,7 @@ public class HttpManager {
         params.put("count", count);
         params.put("page", page);
         String str = params.encodeUrl();
-        Request request = new Request.Builder()
-                .tag(tag)
-                .url(UrlUitl.getRequestUrl(UrlUitl.SEARCH_TOPICS) + "?" + str)
-                .build();
+        Request request = new Request.Builder().tag(tag).url(UrlUitl.getRequestUrl(UrlUitl.SEARCH_TOPICS) + "?" + str).build();
         HttpUtil.enqueue(request, callback);
     }
 
@@ -196,10 +178,31 @@ public class HttpManager {
         params.put("count", count);
         params.put("page", page);
         String str = params.encodeUrl();
-        Request request = new Request.Builder()
-                .tag(tag)
-                .url(UrlUitl.getRequestUrl(UrlUitl.FAVORITES) + "?" + str)
-                .build();
+        Request request = new Request.Builder().tag(tag).url(UrlUitl.getRequestUrl(UrlUitl.FAVORITES) + "?" + str).build();
+        HttpUtil.enqueue(request, callback);
+    }
+
+    /**
+     * @param context     context
+     * @param tag         tag
+     * @param uid         int64	需要查询的用户UID。
+     * @param screen_name string	需要查询的用户昵称。
+     * @param count       int 单页返回的记录条数，默认为50，最大不超过200。
+     * @param cursor      int	返回结果的游标，下一页用返回值里的next_cursor，上一页用previous_cursor，默认为0。
+     * @param trim_status int	返回值中user字段中的status字段开关，0：返回完整status字段、1：status字段仅返回status_id，默认为1。
+     * @param callback    callback
+     */
+    public static void getFriendShips(Context context, String tag, long uid, String screen_name, int count, int cursor, int trim_status, Callback callback) {
+        WeiboParameters params = new WeiboParameters(Constants.APP_KEY);
+        params.put(KEY_ACCESS_TOKEN, AccessTokenKeeper.readAccessToken(context).getToken());
+        params.put(KEY_ACCESS_TOKEN, AccessTokenKeeper.readAccessToken(context).getToken());
+        params.put("uid", uid);
+        params.put("screen_name", screen_name);
+        params.put("count", count);
+        params.put("cursor", cursor);
+        params.put("trim_status", trim_status);
+        String str = params.encodeUrl();
+        Request request = new Request.Builder().tag(tag).url(UrlUitl.getRequestUrl(UrlUitl.FRIENDSHIPS) + "?" + str).build();
         HttpUtil.enqueue(request, callback);
     }
 }

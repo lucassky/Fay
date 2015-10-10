@@ -96,6 +96,7 @@
                 android:paddingLeft="8dp"
                 android:text="草稿"
                 android:textColor="@android:color/white"
+                android:background="?attr/selectableItemBackground"
                 android:textSize="16sp"/>
 
             <TextView
@@ -106,6 +107,7 @@
                 android:paddingLeft="8dp"
                 android:text="热门话题"
                 android:textColor="@android:color/white"
+                android:background="?attr/selectableItemBackground"
                 android:textSize="16sp"/>
 
             <TextView
@@ -116,15 +118,17 @@
                 android:paddingLeft="8dp"
                 android:text="信息"
                 android:textColor="@android:color/white"
+                android:background="?attr/selectableItemBackground"
                 android:textSize="16sp"/>
 
             <TextView
-                android:id="@+id/drawer_tv_follow"
+                android:id="@+id/drawer_tv_friendships"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="8dp"
                 android:text="我的关注"
+                android:background="?attr/selectableItemBackground"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"/>
 

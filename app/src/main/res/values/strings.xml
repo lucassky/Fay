@@ -46,7 +46,8 @@
     <string name="title_activity_wei_bo_url_detail">WeiBoUrlDetailActivity</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_wei_bo_topic">WeiBoTopicActivity</string>
-    <string name="title_activity_favorites">FavoritesActivity</string>
+    <string name="title_activity_wei_bo_topic">微博详情</string>
+    <string name="title_activity_favorites">收藏</string>
+    <string name="title_activity_friendships">关系</string>
 
 </resources>

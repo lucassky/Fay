@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
@@ -35,7 +36,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity implements Callback,View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements Callback, View.OnClickListener {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -45,10 +46,14 @@ public class MainActivity extends AppCompatActivity implements Callback,View.OnC
     private TextView mUserScreenName;
     private TextView mUserDes;
     private TextView mUserFavorites;
+    private TextView mUserFriendships;
 
     private TextView mUserSettings;
     private FragmentTransaction mFragTransaction;
     private FragmentManager mFragManager;
+
+
+    private User mUser;
 
     private static Handler mHandler = new Handler() {
         @Override
@@ -56,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements Callback,View.OnC
             super.handleMessage(msg);
         }
     };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements Callback,View.OnC
         });
         mUserFavorites = (TextView) findViewById(R.id.drawer_tv_favorites);
         mUserFavorites.setOnClickListener(this);
+        mUserFriendships = (TextView) findViewById(R.id.drawer_tv_friendships);
+        mUserFriendships.setOnClickListener(this);
     }
 
     private void setmMainFragment() {
@@ -140,19 +149,19 @@ public class MainActivity extends AppCompatActivity implements Callback,View.OnC
     @Override
     public void onResponse(Response response) throws IOException {
         String tag = (String) response.request().tag();
-            if (UrlUitl.USER_SHOW.equals(tag)) {//获取到了用户信息
+        if (UrlUitl.USER_SHOW.equals(tag)) {//获取到了用户信息
             try {
                 String strRes = response.body().string();
                 Gson gson = new Gson();
-                final User user = gson.fromJson(strRes, User.class);
-                PreferencesUtils.saveValue(this, Constants.USER_ICON_URL, user.getAvatar_large());
-                PreferencesUtils.saveValue(this, Constants.USER_SCREEN_NAME, user.getScreen_name());
+                mUser = gson.fromJson(strRes, User.class);
+                PreferencesUtils.saveValue(this, Constants.USER_ICON_URL, mUser.getAvatar_large());
+                PreferencesUtils.saveValue(this, Constants.USER_SCREEN_NAME, mUser.getScreen_name());
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Picasso.with(MainActivity.this).load(user.getAvatar_large()).into(mUserIcon);
-                        mUserScreenName.setText(user.getScreen_name());
-                        mUserDes.setText(user.getDescription());
+                        Picasso.with(MainActivity.this).load(mUser.getAvatar_large()).into(mUserIcon);
+                        mUserScreenName.setText(mUser.getScreen_name());
+                        mUserDes.setText(mUser.getDescription());
                     }
                 });
             } catch (IOException e) {
@@ -165,9 +174,19 @@ public class MainActivity extends AppCompatActivity implements Callback,View.OnC
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.drawer_tv_favorites:
-                startActivity(new Intent(this,FavoritesActivity.class));
+                startActivity(new Intent(this, FavoritesActivity.class));
+                break;
+            case R.id.drawer_tv_friendships:
+                if(mUser != null){
+                    Intent intent = new Intent(this, FriendshipsActivity.class);
+                    intent.putExtra("userName",mUser.getScreen_name());
+                    intent.putExtra("uid",mUser.getId());
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(this,"缺少用户信息",Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }
