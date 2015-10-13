@@ -198,7 +198,7 @@ public class HttpManager {
         params.put(KEY_ACCESS_TOKEN, AccessTokenKeeper.readAccessToken(context).getToken());
         params.put("uid", uid);
         params.put("screen_name", screen_name);
-        params.put("count", count);
+//        params.put("count", count);
         params.put("cursor", cursor);
         params.put("trim_status", trim_status);
         String str = params.encodeUrl();
