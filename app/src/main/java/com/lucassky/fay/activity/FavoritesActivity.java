@@ -31,8 +31,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoritesActivity extends BaseActivity implements Callback, SwipeRefreshLayout.OnRefreshListener,AdapterView.OnItemClickListener,StatusFavoritesAdapter.OnAdapterOnClick{
-//    private Toolbar mToolBar;
+public class FavoritesActivity extends BaseActivity implements Callback, SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener, StatusFavoritesAdapter.OnAdapterOnClick {
+    //    private Toolbar mToolBar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView mLVFStatuses;//关注好友的最新微博
     private List<Favorite> mFavorites = new ArrayList<Favorite>();
@@ -65,7 +65,7 @@ public class FavoritesActivity extends BaseActivity implements Callback, SwipeRe
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setRefreshing(true);
-        mStatusFavoritesAdapter = new StatusFavoritesAdapter(mFavorites,this,this);
+        mStatusFavoritesAdapter = new StatusFavoritesAdapter(mFavorites, this, this);
         mLVFStatuses.setAdapter(mStatusFavoritesAdapter);
         mLVFStatuses.setOnItemClickListener(this);
         mLVFStatuses.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -77,14 +77,14 @@ public class FavoritesActivity extends BaseActivity implements Callback, SwipeRe
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if ((visibleItemCount + firstVisibleItem) == mFavorites.size() && mFavorites.size() > 19) {
-                if (!isLoadingMore) {
-                    System.out.println("需要加载更多了");
-                    isLoadingMore = true;
-                    mLVFStatuses.addFooterView(mFooter);
-                    HttpManager.getFavorites(FavoritesActivity.this, HttpManager.LOADMORE, 20, pageIndex, FavoritesActivity.this);
+                    if (!isLoadingMore) {
+                        System.out.println("需要加载更多了");
+                        isLoadingMore = true;
+                        mLVFStatuses.addFooterView(mFooter);
+                        HttpManager.getFavorites(FavoritesActivity.this, HttpManager.LOADMORE, 20, pageIndex, FavoritesActivity.this);
+                    }
                 }
             }
-        }
         });
     }
 
@@ -140,7 +140,7 @@ public class FavoritesActivity extends BaseActivity implements Callback, SwipeRe
     public void onRefresh() {
         if (mFavorites.size() > 0) {
             isLoadingMore = true;
-            HttpManager.getFavorites(this, HttpManager.LOADLAST, 20, 1,this);
+            HttpManager.getFavorites(this, HttpManager.LOADLAST, 20, 1, this);
         } else {
             mSwipeRefreshLayout.setRefreshing(false);
         }
@@ -151,9 +151,8 @@ public class FavoritesActivity extends BaseActivity implements Callback, SwipeRe
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                if(isLoadingMore){
-                    if(mLVFStatuses.getFooterViewsCount()>0)
-                        mLVFStatuses.removeFooterView(mFooter);
+                if (isLoadingMore) {
+                    if (mLVFStatuses.getFooterViewsCount() > 0) mLVFStatuses.removeFooterView(mFooter);
                     isLoadingMore = false;
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -167,8 +166,7 @@ public class FavoritesActivity extends BaseActivity implements Callback, SwipeRe
             @Override
             public void run() {
                 mSwipeRefreshLayout.setRefreshing(false);
-                if(mLVFStatuses.getFooterViewsCount()>0)
-                    mLVFStatuses.removeFooterView(mFooter);
+                if (mLVFStatuses.getFooterViewsCount() > 0) mLVFStatuses.removeFooterView(mFooter);
             }
         });
         String str = response.body().string();

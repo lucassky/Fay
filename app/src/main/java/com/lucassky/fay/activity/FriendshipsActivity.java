@@ -24,7 +24,15 @@ import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +73,57 @@ public class FriendshipsActivity extends BaseActivity implements Callback, Adapt
         mScreenName = intent.getStringExtra("userName");
         mUid = intent.getLongExtra("uid", 0);
         HttpManager.getFriendShips(this, UrlUitl.FRIENDSHIPS, mUid, mScreenName, 20, mCursor, 1, this);
+
+        getData();
     }
+
+
+
+
+    public void getData(){
+        new Thread() {
+            private BufferedReader br;
+
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    String str = "http://fanyi.youdao.com/openapi.do?keyfrom=MDictionary&key=1514213571&type=data&doctype=json&version=1.1&q=" + "猫";
+                    URLEncoder.encode(str);
+                    URL url = new URL(str);
+                    HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+                    uc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    uc.setRequestProperty("Charset", "UTF-8");
+                    uc.setRequestProperty("Accept-Language", "zh-CN");
+                    uc.connect();
+                    br = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+                    String line;
+                    String result = "";
+                    while ((line = br.readLine()) != null) {
+                        result = result + line;
+                    }
+                    br.close();
+
+                } catch (MalformedURLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+
+
+
+
+
+
+
+
+
 
     @Override
     protected int getLayoutResource() {
