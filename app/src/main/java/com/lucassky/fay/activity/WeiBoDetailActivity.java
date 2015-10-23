@@ -35,6 +35,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,13 +68,32 @@ public class WeiBoDetailActivity extends AppCompatActivity implements Callback, 
     List<Status> mStatusesForReports = new ArrayList<Status>();// Reports
     List<Status> mStatuesForComments = new ArrayList<Status>();// Comments
 
-    private static Handler mHandler = new Handler() {
+//    private static Handler mHandler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//        }
+//    };
+
+
+    private static class WebiBoHandler extends Handler {
+
+        private WeakReference<WeiBoDetailActivity> mWeiBoDetailActivity;
+
+        public WebiBoHandler(WeiBoDetailActivity weiBoDetailActivity) {
+            mWeiBoDetailActivity = new WeakReference<WeiBoDetailActivity>(weiBoDetailActivity);
+        }
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-        }
-    };
+            if (mWeiBoDetailActivity == null)
+                return;
 
+        }
+    }
+
+    private final WebiBoHandler mHandler = new WebiBoHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,14 +108,14 @@ public class WeiBoDetailActivity extends AppCompatActivity implements Callback, 
 
     private void initView() {
         mToolBar = (Toolbar) findViewById(R.id.activity_my_toolbar);
-        mToolBar.setTitle("微博详情");
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
+            mToolBar.setTitle("微博详情");
+            setSupportActionBar(mToolBar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
         });
 
         mHeaderView = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout.status_detail, mListView, false);

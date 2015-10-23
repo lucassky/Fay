@@ -61,6 +61,7 @@ public class FriendshipsActivity extends BaseActivity implements Callback, Adapt
         super.onCreate(savedInstanceState);
         getLayoutResource();
 
+        //TODO
         ListView mListView4User = (ListView) findViewById(R.id.lv_f_users);
         mFriendshipAdapter = new FriendshipAdapter(this, mUsers);
         mListView4User.setAdapter(mFriendshipAdapter);
