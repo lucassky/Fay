@@ -1,6 +1,7 @@
 package com.lucassky.fay.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;

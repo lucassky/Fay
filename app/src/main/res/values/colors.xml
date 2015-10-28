@@ -27,4 +27,6 @@
     <color name="dark_red">#F4511E</color>
     <color name="accent_red">#FF6347</color>
     <color name="vp_bg">#949594</color>
+    <color name="divider">#373737</color>
+    <color name="item_bg">#414141</color>
 </resources>

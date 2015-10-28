@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements Callback, View.On
             @Override
             public void onClick(View v) {
                 System.out.println("mUserSettings.setOnClickListener");
-            }
+        }
         });
         mUserFavorites = (TextView) findViewById(R.id.drawer_tv_favorites);
         mUserFavorites.setOnClickListener(this);

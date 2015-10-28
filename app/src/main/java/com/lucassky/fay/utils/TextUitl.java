@@ -49,7 +49,7 @@ public class TextUitl {
                         && strarray[i + 6] == '/') {
                     StringBuffer sb = new StringBuffer("http://");
                     for (int j = i + 7; true ; j++) {
-                        if (j < strarray.length && (strarray[j] != ' ' || j < strarray.length))
+                        if (j < strarray.length && strarray[j] != ' ' && j < strarray.length && sb.length()<19)
                             sb.append(strarray[j]);
                         else {
                             Log.d("http", sb.toString());
@@ -84,7 +84,7 @@ public class TextUitl {
                     startIndex = i;
                 } else {
                     if (start) {
-                        if (strarray[i] == ':' || i == strarray.length) {
+                        if (strarray[i] == ':' || strarray[i] == ' ' || i == strarray.length) {
                              final String strName = sb.toString();
                             ClickableSpan clickableSpan = new ClickableSpan() {
                                 @Override

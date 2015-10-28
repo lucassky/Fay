@@ -71,19 +71,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/drawer_rl_header"
-            android:divider="@android:color/white"
-            android:dividerPadding="3dp"
+            android:divider="@drawable/divider"
+            android:dividerPadding="15dp"
             android:orientation="vertical"
-            android:padding="10dp"
-            android:showDividers="middle">
+            android:showDividers="middle|end">
 
             <TextView
                 android:id="@+id/drawer_tv_favorites"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackground"
+                android:drawableLeft="@drawable/ic_store"
+                android:drawablePadding="6dp"
                 android:gravity="center_vertical"
-                android:paddingLeft="8dp"
+                android:paddingLeft="18dp"
                 android:text="收藏"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"/>
@@ -92,43 +93,51 @@
                 android:id="@+id/drawer_tv_draft"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:background="?attr/selectableItemBackground"
+                android:drawableLeft="@drawable/ic_draft"
+                android:drawablePadding="6dp"
                 android:gravity="center_vertical"
-                android:paddingLeft="8dp"
+                android:paddingLeft="18dp"
                 android:text="草稿"
                 android:textColor="@android:color/white"
-                android:background="?attr/selectableItemBackground"
                 android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/drawer_tv_hot"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:background="?attr/selectableItemBackground"
+                android:drawableLeft="@drawable/ic_topic"
+                android:drawablePadding="6dp"
                 android:gravity="center_vertical"
-                android:paddingLeft="8dp"
+                android:paddingLeft="18dp"
                 android:text="热门话题"
                 android:textColor="@android:color/white"
-                android:background="?attr/selectableItemBackground"
                 android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/drawer_tv_msg"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:background="?attr/selectableItemBackground"
+                android:drawableLeft="@drawable/ic_message"
+                android:drawablePadding="6dp"
                 android:gravity="center_vertical"
-                android:paddingLeft="8dp"
+                android:paddingLeft="18dp"
                 android:text="信息"
                 android:textColor="@android:color/white"
-                android:background="?attr/selectableItemBackground"
                 android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/drawer_tv_friendships"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="8dp"
-                android:text="我的关注"
                 android:background="?attr/selectableItemBackground"
+                android:drawableLeft="@drawable/ic_follow"
+                android:drawablePadding="6dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="18dp"
+                android:text="我的关注"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"/>
 
@@ -137,11 +146,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackground"
+                android:drawableLeft="@drawable/ic_settings"
+                android:drawablePadding="6dp"
                 android:gravity="center_vertical"
-                android:paddingLeft="8dp"
+                android:paddingLeft="18dp"
                 android:text="设置"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
         </LinearLayout>
     </RelativeLayout>
 </android.support.v4.widget.DrawerLayout>

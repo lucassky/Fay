@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- drawable/ripple_mask.xml-->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+        android:color="@android:color/black">
+    <item
+        android:id="@android:id/mask"
+        android:drawable="@color/status_bg"/>
+    <item
+        android:id="@android:id/background"
+        android:drawable="@color/item_bg"/>
+</ripple>

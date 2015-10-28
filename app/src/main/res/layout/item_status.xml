@@ -5,14 +5,15 @@
                                     android:layout_marginBottom="2dp"
                                     android:layout_marginLeft="4dp"
                                     android:layout_marginRight="4dp"
-                                    android:background="@android:color/darker_gray"
-                                    android:layout_marginTop="2dp">
+                                    android:layout_marginTop="2dp"
+                                    android:background="@color/item_bg"
+                                    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
+        android:background="@drawable/selector_item_status"
         android:orientation="vertical"
         android:padding="4dp">
 
@@ -30,9 +31,9 @@
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/user_icon"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="14sp"/>
 
             <TextView
@@ -40,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/user_name"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="2dp"
                 android:layout_toRightOf="@+id/user_icon"
                 android:textColor="@android:color/darker_gray"
@@ -50,7 +51,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp">
+            android:layout_marginLeft="50dp">
 
             <TextView
                 android:id="@+id/status_tv_content"
@@ -58,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:autoLink="all"
                 android:padding="8dp"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="15sp"/>
 
             <com.lucassky.fay.view.ExpandGridView
@@ -78,7 +79,7 @@
             android:id="@+id/status2_rl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="60dp"
             android:orientation="horizontal"
             android:visibility="gone">
 
@@ -101,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:autoLink="all"
                     android:padding="5dp"
-                    android:textColor="@android:color/black"
+                    android:textColor="@android:color/white"
                     android:textSize="15sp"
                     android:visibility="gone"/>
 
