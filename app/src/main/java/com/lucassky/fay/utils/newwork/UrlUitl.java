@@ -40,7 +40,6 @@ public class UrlUitl {
             urlSuffix = "favorites.json";
         }else if(FRIENDSHIPS.equals(key)){
             urlSuffix = "friendships/friends.json";
-
         }
         return ROOT + urlSuffix;
     }
